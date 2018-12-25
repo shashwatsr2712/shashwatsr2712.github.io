@@ -11,7 +11,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1"/>
 </head>
 
-<body>
+<body style="background-color:#D3D3D3;">
 	<div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
 	<div class="navbar-header">
@@ -47,20 +47,21 @@
 	</div>
 
 	<div class="container">
-	<center><div class="thumbnail">
-		<img id="picture" src="" alt=" album art " class="img img-thumbnail"/>
-		<div class="caption">
-			<p><b>Title:</b> <span id="title">Title appears here...</span></p>
-			<p><b>Artist:</b> <span id="artist">Artist info appears here...</span></p>
-			<p><b>Album:</b> <span id="album">Album detail appears here...</span></p>
+	<center><div class="thumbnail" style="background-color:#ADD8E6;">
+		<img id="picture" src="images/cplogo1.png" alt=" album art " class="img-rounded"/><br/>
+		<div class="caption" style="font-family:droid;">
+			<p><b>Title:</b> <span id="title">Title appears here</span></p>
+			<p><b>Artist:</b> <span id="artist">Artist info appears here</span></p>
+			<p><b>Album:</b> <span id="album">Album detail appears here</span></p>
 		</div>
 		<audio id="sound" controls>
 		</audio>
 	</div></center><br/>
 	
-	<input class="btn btn-primary" type="file" id="file" onchange="loadFile(this)"><br/>
-	<ul id="playlist" type="square">
-
+	<input class="btn btn-danger" type="file" id="file" onchange="loadFile(this)"><br/>
+	<h3 style="font-family:droid;color:#0E78C5;font-style:bold;">PlayList (select mp3): </h3><br/>
+	<ul id="playlist" type="square" style="font-size:1.4em;font-style:italic;">
+		
 	</ul>
 	</div>
 	
@@ -109,7 +110,9 @@
 	}
     }
     
-    
+    //sound.onended=function(this){
+	//document.write(this);
+    //}
     
     function highlightIt(index){ // this function displays all tags from music file along with audio controls
 	var url1=filesLog[index].urn || filesLog[index].name;
@@ -140,11 +143,10 @@
         }
         var base64 = "data:" + image.format + ";base64," +
                 window.btoa(base64String);
-        document.getElementById('picture').style.display = "block";
 	document.getElementById('picture').setAttribute('src',base64);
-      }
+      } 
       else {
-        document.getElementById('picture').style.display = "none";
+        document.getElementById('picture').setAttribute('src','images/cplogo1.png');
       }
       var sound = document.getElementById('sound');
       sound.src = URL.createObjectURL(file);
