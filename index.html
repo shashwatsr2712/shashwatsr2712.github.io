@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>coolPlay</title>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	<script>alert("This project is currently in development phase. Suggestions/feedbacks are welcome. Click on the Logo for details.");</script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.4/angular.min.js"></script>
+	<script src="id3js/id3-min.js" type="text/javascript"></script>
+	<meta name="viewport" content="width=device-width,initial-scale=1"/>
+</head>
+
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+	<div class="navbar-header">
+		<!--padding-top=0px(overriding bootstrap's navbar-brand css) is essential for logo to fit in the navbar as height of logo is same as that of navbar-->
+		<a href="" class="navbar-brand" style="padding-top:0px;" data-toggle="modal" data-target="#myModal"><img src="images/cplogo5.png" alt="coolPlay Logo"/></a>
+	</div>
+	</div>
+	</div><br/><br/><br/><br/>
+
+	<!--Modal for About section-->
+	<div id="myModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h3 class="modal-title"><center><img src="images/cplogo1.png" alt="coolPlay Logo" class="img-responsive img-rounded"/></center></h3>
+				</div>
+				<div class="modal-body" style="font-family:times;">
+					<p><h4><strong>coolPlay</strong> allows you to make a playlist of your favourite songs by selecting them from your device. So just <strong>Add & Play</strong>.</h4></p><br/>
+					<p><h4><b>Get Started: </b>
+						<ul type="circle">
+							<h4>1.Add new item to the list by selecting a file from your device.</h4>
+							<h4>2.Select any item from the list to make its metadata (album art, artist, album) and audio controls visible</h4>
+						</ul></h4></p>
+					<p><h4>Simple enough, isn't it?</h4></p><br/>
+					<p><h4><i>This project is currently in development phase. More features and improvements coming soon...</i></h4></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+	<center><div class="thumbnail">
+		<img id="picture" src="" alt=" album art " class="img img-thumbnail"/>
+		<div class="caption">
+			<p><b>Title:</b> <span id="title">Title appears here...</span></p>
+			<p><b>Artist:</b> <span id="artist">Artist info appears here...</span></p>
+			<p><b>Album:</b> <span id="album">Album detail appears here...</span></p>
+		</div>
+		<audio id="sound" controls>
+		</audio>
+	</div></center><br/>
+	
+	<input class="btn btn-primary" type="file" id="file" onchange="loadFile(this)"><br/>
+	<ul id="playlist" type="square">
+
+	</ul>
+	</div>
+	
+	
+	<script>
+    /**
+     Loading the tags using XHR.
+     **/
+     
+    //sample.mp3 sits on your domain
+    /*ID3.loadTags("sample.mp3", function() {
+      showTags("sample.mp3");
+    }, {
+      tags: ["title","artist","album","picture"]
+    });*/
+    
+    var filesLog=[]; //this stores the file type info of all items added to playlist
+    /**
+     * Loading the tags using the FileAPI.
+     */
+    function loadFile(inp) {
+      var file = inp.files[0];
+      var url = file.urn || file.name;
+      
+      filesLog.push(file);
+      var unlist=document.getElementById("playlist");
+      var count=document.querySelectorAll("li").length;
+      var item=document.createElement("li");var item2=document.createElement("a");
+      var str="javascript:highlightIt("+count+")";
+      item2.setAttribute("href",str);
+      item2.appendChild(document.createTextNode(url));
+      item2.appendChild(document.createElement("br"));
+      item.appendChild(item2);
+      unlist.appendChild(item);
+      
+      ID3.loadTags(url, function() {
+        showTags(url,file);
+         }, {
+        tags: ["title","artist","album","picture"],
+	 dataReader: ID3.FileAPIReader(file)
+       });
+       // not really needed in this exact case, but since it is really important in other cases,
+       // don't forget to revoke the blobURI when you don't need it
+       sound.onend = function(e) {
+       URL.revokeObjectURL(this.src);
+	}
+    }
+    
+    
+    
+    function highlightIt(index){ // this function displays all tags from music file along with audio controls
+	var url1=filesLog[index].urn || filesLog[index].name;
+	ID3.loadTags(url1, function() {
+        showTags(url1,filesLog[index]);
+         }, {
+        tags: ["title","artist","album","picture"],
+	 dataReader: ID3.FileAPIReader(filesLog[index])
+       });
+    }
+    
+    
+    
+    /**
+     * Generic function to get the tags after they have been loaded after upload
+     */
+    function showTags(url,file) {
+      var tags = ID3.getAllTags(url);
+      console.log(tags);
+      document.getElementById('title').textContent = tags.title || "";
+      document.getElementById('artist').textContent = tags.artist || "";
+      document.getElementById('album').textContent = tags.album || "";
+      var image = tags.picture;
+      if (image) {
+        var base64String = "";
+        for (var i = 0; i < image.data.length; i++) {
+            base64String += String.fromCharCode(image.data[i]);
+        }
+        var base64 = "data:" + image.format + ";base64," +
+                window.btoa(base64String);
+        document.getElementById('picture').setAttribute('src',base64);
+      } else {
+        document.getElementById('picture').style.display = "none";
+      }
+	var sound = document.getElementById('sound');
+	sound.src = URL.createObjectURL(file);
+    }
+</script>
+</body>
+</html>
