@@ -140,12 +140,14 @@
         }
         var base64 = "data:" + image.format + ";base64," +
                 window.btoa(base64String);
-        document.getElementById('picture').setAttribute('src',base64);
-      } else {
+        document.getElementById('picture').style.display = "block";
+	document.getElementById('picture').setAttribute('src',base64);
+      }
+      else {
         document.getElementById('picture').style.display = "none";
       }
-	var sound = document.getElementById('sound');
-	sound.src = URL.createObjectURL(file);
+      var sound = document.getElementById('sound');
+      sound.src = URL.createObjectURL(file);
     }
 </script>
 </body>
