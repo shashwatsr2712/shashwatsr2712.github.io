@@ -35,6 +35,7 @@
 						<ul type="circle">
 							<h4>1.Add new item to the list by selecting a file from your device.</h4>
 							<h4>2.Select any item from the list to make its metadata (album art, artist, album) and audio controls visible</h4>
+							<h4>3.Click on <strong>Repeat</strong> to turn repetition on. Click on it again to turn it off.</h4>
 						</ul></h4></p>
 					<p><h4>Simple enough, isn't it?</h4></p><br/>
 					<p><h4><i>This project is currently in development phase. More features and improvements coming soon...</i></h4></p>
@@ -54,12 +55,12 @@
 			<p><b>Artist:</b> <span id="artist">Artist info appears here</span></p>
 			<p><b>Album:</b> <span id="album">Album detail appears here</span></p>
 		</div>
-		<audio id="sound" controls>
+		<audio id="sound" controls="controls">
 		</audio>
 	</div></center><br/>
 	
 	<input class="btn btn-danger" type="file" id="file" onchange="loadFile(this)"><br/>
-	<h3 style="font-family:droid;color:#0E78C5;font-style:bold;">PlayList (select mp3): </h3><br/>
+	<h3 style="font-family:droid;color:#0E78C5;font-style:bold;">PlayList (select mp3): <button id="rpt" class="btn btn-primary" onclick="repeatToggle()">Repeat</button></h3><br/>
 	<ul id="playlist" type="square" style="font-size:1.4em;font-style:italic;">
 		
 	</ul>
@@ -78,7 +79,8 @@
       tags: ["title","artist","album","picture"]
     });*/
     
-    var filesLog=[]; //this stores the file type info of all items added to playlist
+    var filesLog=[]; //this stores the 'file type' info of all items added to playlist
+    var fileNamesLog=[]; //this stores the corresponding file names of all items (from metadata;not from filename)
     /**
      * Loading the tags using the FileAPI.
      */
@@ -87,6 +89,7 @@
       var url = file.urn || file.name;
       
       filesLog.push(file);
+
       var unlist=document.getElementById("playlist");
       var count=document.querySelectorAll("li").length;
       var item=document.createElement("li");var item2=document.createElement("a");
@@ -98,7 +101,7 @@
       unlist.appendChild(item);
       
       ID3.loadTags(url, function() {
-        showTags(url,file);
+        showTags(url,file,count);
          }, {
         tags: ["title","artist","album","picture"],
 	 dataReader: ID3.FileAPIReader(file)
@@ -110,29 +113,54 @@
 	}
     }
     
-    //sound.onended=function(this){
-	//document.write(this);
-    //}
-    
-    function highlightIt(index){ // this function displays all tags from music file along with audio controls
+    // this function displays all tags from music file along with audio controls
+    function highlightIt(index){ 
 	var url1=filesLog[index].urn || filesLog[index].name;
 	ID3.loadTags(url1, function() {
-        showTags(url1,filesLog[index]);
+        showTags(url1,filesLog[index],index);
          }, {
         tags: ["title","artist","album","picture"],
 	 dataReader: ID3.FileAPIReader(filesLog[index])
        });
     }
     
+    // Turn on or off repetition
+    function repeatToggle(){
+	var aud=document.getElementsByTagName("audio");
+	var bt=document.getElementById("rpt");
+	if(bt.getAttribute("class")=="btn btn-primary"){
+		aud[0].setAttribute("loop","loop");
+		bt.setAttribute("class","btn btn-default");
+	}
+	else{
+		aud[0].removeAttribute("loop");
+		bt.setAttribute("class","btn btn-primary");
+	}
+    }
     
+    var audi=document.getElementById("sound");
+    audi.onended=function(){
+	var count=document.querySelectorAll("li").length;
+	var titl=String(document.getElementById('title').textContent);
+	var i;
+	for(i=0;i<count;i++){
+		if(fileNamesLog[i]==titl&&i!=count-1){ //if the ended audio is not the last item of list, play the next item
+			highlightIt(i+1);}
+		else if(fileNamesLog[i]===titl&&i==count-1){ //if ended audio is the last item, play the first item
+			highlightIt(0);}
+		else
+			continue; //not needed
+	}
+    };
     
     /**
      * Generic function to get the tags after they have been loaded after upload
      */
-    function showTags(url,file) {
+    function showTags(url,file,index) {
       var tags = ID3.getAllTags(url);
       console.log(tags);
       document.getElementById('title').textContent = tags.title || "";
+      fileNamesLog[index]=tags.title || "";
       document.getElementById('artist').textContent = tags.artist || "";
       document.getElementById('album').textContent = tags.album || "";
       var image = tags.picture;
@@ -150,6 +178,7 @@
       }
       var sound = document.getElementById('sound');
       sound.src = URL.createObjectURL(file);
+      sound.play();
     }
 </script>
 </body>
