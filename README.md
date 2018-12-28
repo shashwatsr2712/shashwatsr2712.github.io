@@ -6,6 +6,7 @@
 ## New Features Added:
 * Repetition can be turned on/off by clicking on 'Repeat' button.
 * Autoplay feature has been added now, which automatically starts playing the next song in queue after a song ends, unless 'Repeat' mode is on.
-* BootStrap 4 ha been used, replacing BootStrap 3. Playlist is now accessible from collapsible Navbar. 
+* BootStrap 4 has been used, replacing BootStrap 3.
+* Playlist and buttons (Repeat and Input) is now accessible from collapsible Navbar. 
 #
 ***The project is in development phase. More features and improvements would be added soon.***
