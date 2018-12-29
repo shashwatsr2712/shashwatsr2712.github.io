@@ -17,18 +17,25 @@
 	a:link{color:black;}
 	#foot{
 	width:100%;padding:15px 0px 5px 0px;margin-top:200px;background-color:#D8D7CD;}
+	
+	/*This is the fix for non-scrolling navbar hamburger menu*/
+	.fixed-top .navbar-collapse {
+	max-height:400px;
+	overflow-y:auto;
+	/*webkit-overflow-scrolling:touch;*/
+	}
 	</style>
 	<meta name="viewport" content="width=device-width,initial-scale=1"/>
 </head>
 
 <body id="bgimg">
-	<nav class="navbar navbar-dark bg-dark fixed-top">
+	<nav class="navbar fixed-top navbar-dark bg-dark">
 	<a href="" class="navbar-brand" data-toggle="modal" data-target="#myModal"><img src="images/cplogon4m1.png" alt="coolPlay Logo"/></a>
-	<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#myNavbar">
+	<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
 	<div class="collapse navbar-collapse" id="myNavbar">
-		<ul class="navbar-nav" id="ham"><br/>
+		<ul class="navbar-nav mr-auto" id="ham"><br/>
 			<div class="nav-item .d-none .d-sm-block">
 				<button class="rpt btn btn-outline-secondary" onclick="repeatToggle()"><b>Repeat</b></button>
 				<input class="btn btn-sm btn-info" type="file" id="file" onchange="loadFile(this)"><br/>
@@ -36,7 +43,11 @@
 			<!--<li>Here's your playList </li>-->
 		</ul>
 	</div>
-	</nav><br/><br/><br/><br/>
+	</nav>
+	
+	<!--"bgimg" div begins-->
+	<div id="bgimg">
+	<br/><br/><br/><br/>
 
 	<!--Modal for About section-->
 	<div id="myModal" class="modal fade">
@@ -64,6 +75,7 @@
 		</div>
 	</div>
 
+	<!--Container opens-->
 	<div class="container">
 	<center><figure class="figure" id="bgimg2"><!--initially style="background-color:#2EB1FF;" instead of bg-img-->
 		<img id="picture" src="images/cplogon3m1.png" alt="album art " class="figure-img img-fluid img-thumbnail rounded"/>
@@ -92,6 +104,8 @@
 		<center><p><b><i>coolPlay &copy;</i> | ALL RIGHTS RESERVED. | CONTACT US: <a href="mailto:shashwatsr2712@gmail.com"><i>shashwatsr2712@gmail.com</i></a></b></p></center>
 	</div>
 	</footer>
+	</div>
+	<!--"bgimg" div ends-->
 	
 	<script>
     /**
