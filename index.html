@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>coolPlay</title>
-	<link rel="icon" type="image/ico" href="images/icon1.ico"/>
+	<link rel="icon" type="image/ico" href="images/cplogowcIcon.ico"/>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
 	<script>alert("This project is currently in development phase. Suggestions/feedbacks are welcome. Click on the Logo for details.");</script>
@@ -26,18 +26,19 @@
 	}
 	</style>
 	<meta name="viewport" content="width=device-width,initial-scale=1"/>
+	<!--IMAGES: Icon:cplogowcIcon.ico; Navbar-logo:cplogowcNavLogo.png; Modal:cplogorModal.png; Default-Album-Art:cplogorArt.png;-->
 </head>
 
 <body>
-	<nav class="navbar fixed-top navbar-dark bg-dark">
-	<a href="" class="navbar-brand" data-toggle="modal" data-target="#myModal"><img src="images/cplogon4m1.png" alt="coolPlay Logo"/></a>
-	<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
+	<nav class="navbar fixed-top navbar-light bg-warning">
+	<a href="" class="navbar-brand" data-toggle="modal" data-target="#myModal" style="font-style:italic;"><img src="images/cplogowcNavLogo.png" alt="coolPlay Logo"/> &nbsp;COOLPLAY&trade;</a>
+	<button type="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
 	<div class="collapse navbar-collapse" id="myNavbar">
 		<ul class="navbar-nav mr-auto" id="ham"><br/>
 			<div class="nav-item .d-none .d-sm-block">
-				<button class="rpt btn btn-outline-secondary" onclick="repeatToggle()"><b>Repeat</b></button>
+				<button type="button" class="rpt btn btn-outline-secondary" onclick="repeatToggle()"><b>Repeat</b></button>
 				<input class="btn btn-sm btn-info" type="file" id="file" onchange="loadFile(this)"><br/>
 			</div>
 			<!--<li>Here's your playList </li>-->
@@ -53,8 +54,8 @@
 	<div id="myModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header" style="background-color:#2EB1FF;">
-					<h3 class="modal-title"><center><img src="images/cplogon3m.png" alt="coolPlay Logo" class="img-fluid rounded"/></center></h3>
+				<div class="modal-header" style="background-color:#000000;">
+					<h3 class="modal-title"><center><img src="images/cplogorModal.png" alt="coolPlay Logo" class="img-fluid rounded"/></center></h3>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body" style="font-family:times;" id="bgimg2">
@@ -79,7 +80,7 @@
 	<!--Container opens-->
 	<div class="container">
 	<center><figure class="figure" id="bgimg2"><!--initially style="background-color:#2EB1FF;" instead of bg-img-->
-		<img id="picture" src="images/cplogon3m1.png" alt="album art " class="figure-img img-fluid img-thumbnail rounded"/>
+		<img id="picture" src="images/cplogorArt.png" alt="coolPlay logo " class="figure-img img-fluid img-thumbnail rounded"/>
 		<figcaption class="figure-caption" style="font-family:courier;color:black;font-size:1.1em;text-align:center;">
 			<a href="javascript:playPrev();"><i class="fa fa-hand-o-left fa-2x"></i></a>
 			<audio id="sound" controls="controls" onended="autoplayNext()"></audio>
@@ -257,9 +258,11 @@
         var base64 = "data:" + image.format + ";base64," +
                 window.btoa(base64String);
 	document.getElementById('picture').setAttribute('src',base64);
+	document.getElementById('picture').setAttribute('alt',url);
       } 
       else {
-        document.getElementById('picture').setAttribute('src','images/cplogon3m1.png');
+        document.getElementById('picture').setAttribute('src','images/cplogorArt.png');
+	document.getElementById('picture').setAttribute('alt','coolPlay logo');
       }
       var sound = document.getElementById('sound');
       sound.src = URL.createObjectURL(file);
