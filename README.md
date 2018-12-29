@@ -12,5 +12,7 @@
 * 'Previous' and 'Next' icons added.
 * Clicking on Next plays the next song in queue.
 * Clicking on Previous restarts the song if current Play time > 3 seconds. If it is less than 3 seconds, previous song in queue is played.   
+### Update (Fix):
+Non scrlling navbar issue fixed for mobile devices.
 #
 ***The project is in development phase. More features and improvements would be added soon.***
