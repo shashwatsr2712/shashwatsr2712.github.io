@@ -14,5 +14,8 @@
 * Clicking on Previous restarts the song if current Play time > 3 seconds. If it is less than 3 seconds, previous song in queue is played.   
 ### Update (Fix):
 Non-scrolling navbar issue fixed for mobile devices.
+## Update (New features & improvements):
+* Bug fixes for Previous/Next and Autoplay.
+* Video support has been added for webm, mp4 and mkv formats.
 #
 ***The project is in development phase. More features and improvements would be added soon.***
