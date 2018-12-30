@@ -53,7 +53,7 @@
 	.fa-quora {
 	background: #AA2200;
 	}
-
+	
 	#foot{
 	width:100%;padding:5px 0px 10px 0px;margin-top:200px;background-color:#D8D7CD;}
 	</style>
@@ -65,7 +65,7 @@
 	<nav class="navbar fixed-top navbar-light bg-warning">
 	<a href="" class="navbar-brand" data-toggle="modal" data-target="#myModal" style="font-style:italic;"><img src="images/cplogowcNavLogo.png" alt="coolPlay Logo"/> &nbsp;COOLPLAY&trade;</a>
 	<div class="ml-auto">
-		<button type="button" class="rpt btn btn-outline-danger" onclick="repeatToggle()"><b>Repeat</b></button>	
+		<button type="button" class="rpt btn btn-outline-danger" onclick="repeatToggle()"><b>Repeat</b></button>
 		<button type="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -113,17 +113,28 @@
 
 	<!--Container opens-->
 	<div class="container">
-	<center><figure class="figure" id="bgimg2"><!--initially style="background-color:#2EB1FF;" instead of bg-img-->
-		<img id="picture" src="images/cplogorArt.png" alt="coolPlay logo " class="figure-img img-fluid img-thumbnail rounded"/>
-		<figcaption class="figure-caption" style="font-family:courier;color:black;font-size:1.1em;text-align:center;">
+	<!--AUDIO-->
+	<center id="soundD"><figure class="figure" id="bgimg2"><!--initially style="background-color:#2EB1FF;" instead of bg-img-->
+		<img id="picture" src="images/cplogorArt.png" alt="coolPlay logo" class="figure-img img-fluid img-thumbnail rounded"/>
+		<figcaption class="figure-caption" style="font-family:courier;color:black;font-size:1.1em;text-align:center;overflow:auto;">
 			<a href="javascript:playPrev();"><i class="far fa-hand-point-left fa-2x"></i></a>
 			<audio id="sound" controls="controls" onended="autoplayNext()"></audio>
 			<a href="javascript:autoplayNext();"><i class="far fa-hand-point-right fa-2x"></i></a><br/><br/>
-			<p><b>Title:</b> <span id="title">__________</span></p>
-			<p><b>Artist:</b> <span id="artist">__________</span></p>
-			<p><b>Album:</b> <span id="album">__________</span></p>
+			<p><b>Title:</b> <span class="title">__________</span></p>
+			<p id="Ar"><b>Artist:</b> <span id="artist">__________</span></p>
+			<p id="Al"><b>Album:</b> <span id="album">__________</span></p>
 		</figcaption>
 	</figure></center>
+	<!--AUDIO-->
+	
+	<!--VIDEO-->
+	<center id="mediaD" style="display:none">
+		<video id="media" width="100%" height="100%" controls="controls" onended="autoplayNext()"></video><br/>
+		<a href="javascript:playPrev();"><i class="far fa-hand-point-left fa-2x"></i></a>
+		<a href="javascript:autoplayNext();"><i class="far fa-hand-point-right fa-2x"></i></a><br/><br/>
+		<p style="font-family:courier;color:black;font-size:1.1em;text-align:center;overflow:auto;"><b>Title:</b><span class="title">__________</span></p>
+	</center>
+	<!--VIDEO-->
 	
 	<hr> <!--horizontal divider line-->
 	
@@ -162,7 +173,7 @@
     });*/
     
     var filesLog=[]; //this stores the 'file type' info of all items added to playlist
-    var fileNamesLog=[]; //this stores the corresponding file names of all items (from metadata;not from filename)
+    var fileNamesLog=[]; //this stores the corresponding titles of all items. For audios, it's from metadata. For videos (and audios without title in metadata), it's the original url.
     /**
      * Loading the tags using the FileAPI.
      */
@@ -184,7 +195,7 @@
 	/*Adding item to Playlist done*/
 	
 	/*Adding item to Playlist in navbar begins*/
-	var itemn=document.createElement("li");var itemn2=document.createElement("a");
+      var itemn=document.createElement("li");var itemn2=document.createElement("a");
       itemn2.setAttribute("href",str);
       itemn2.appendChild(document.createTextNode(url));
       itemn2.appendChild(document.createElement("br"));
@@ -202,14 +213,14 @@
        });
        // not really needed in this exact case, but since it is really important in other cases,
        // don't forget to revoke the blobURI when you don't need it
-       sound.onend = function(e) {
+       /*sound.onend = function(e) {
        URL.revokeObjectURL(this.src);
-	}
+	}*/
     }
     
     
     
-    // this function displays all tags from music file along with audio controls
+    // this function displays all tags from music file along with audio/video controls
     function highlightIt(index){ 
 	var url1=filesLog[index].urn || filesLog[index].name;
 	ID3.loadTags(url1, function() {
@@ -224,15 +235,16 @@
     
     // Turn on or off repetition
     function repeatToggle(){
-	var aud=document.getElementsByTagName("audio");
+	var aud=document.getElementById("sound");
+	var vid=document.getElementById("media");
 	var bt=document.getElementsByClassName("rpt");
-	if(bt[0].getAttribute("class")=="rpt btn btn-outline-secondary"){
-		aud[0].setAttribute("loop","loop");
+	if(bt[0].getAttribute("class")=="rpt btn btn-outline-danger"){
+		aud.setAttribute("loop","loop");vid.setAttribute("loop","loop");
 		bt[0].setAttribute("class","rpt btn btn-primary");bt[1].setAttribute("class","rpt btn btn-primary");
 	}
 	else{
-		aud[0].removeAttribute("loop");
-		bt[0].setAttribute("class","rpt btn btn-outline-secondary");bt[1].setAttribute("class","rpt btn btn-outline-secondary");
+		aud.removeAttribute("loop");vid.removeAttribute("loop","loop");
+		bt[0].setAttribute("class","rpt btn btn-outline-danger");bt[1].setAttribute("class","rpt btn btn-outline-danger");
 	}
     }
     
@@ -241,17 +253,34 @@
     // For Autoplay/Playing Next Song
     function autoplayNext(){
 	var count=document.querySelectorAll("li").length;
-	var titl=String(document.getElementById('title').textContent);
+	var titl=String(document.getElementsByClassName('title')[0].textContent); // For audio
+	var titl1=String(document.getElementsByClassName('title')[1].textContent); //For video
 	var i;
-	for(i=0;i<count/2;i++){
-		if(fileNamesLog[i]==titl&&i!=count/2-1){ //if the ended audio is not the last item of list, play the next item
-			highlightIt(i+1);
-			break;}
-		else if(fileNamesLog[i]===titl&&i==count/2-1){ //if ended audio is the last item, play the first item
-			highlightIt(0);
-			break;}
-		else{
-			continue;} //not needed
+	/*If audio is playing*/
+	if(!isVideoActive()){
+		for(i=0;i<count/2;i++){
+			if(fileNamesLog[i]==titl&&i!=count/2-1){ //if the ended audio is not the last item of list, play the next item
+				highlightIt(i+1);
+				break;}
+			else if(fileNamesLog[i]===titl&&i==count/2-1){ //if ended audio is the last item, play the first item
+				highlightIt(0);
+				break;}
+			else{
+				continue;} //not needed
+		}
+	}
+	/*If video is playing*/
+	else{
+		for(i=0;i<count/2;i++){
+			if(fileNamesLog[i]==titl1&&i!=count/2-1){ //if the ended video is not the last item of list, play the next item
+				highlightIt(i+1);
+				break;}
+			else if(fileNamesLog[i]===titl1&&i==count/2-1){ //if ended video is the last item, play the first item
+				highlightIt(0);
+				break;}
+			else{
+				continue;} //not needed
+		}
 	}
     }
     
@@ -260,22 +289,45 @@
     // For playing previous song if current time < 3 secs; else play same song again
     function playPrev(){
 	var count=document.querySelectorAll("li").length;
-	var titl=String(document.getElementById('title').textContent);
-	var sou=document.getElementsByTagName("audio");
+	var titl=String(document.getElementsByClassName('title')[0].textContent); //For audio
+	var titl1=String(document.getElementsByClassName('title')[1].textContent); //For video
+	var aud=document.getElementById("sound");
+	var vid=document.getElementById("media");
 	var i;
-	if(sou[0].currentTime>3){ //currentTime gives the current time of audio in seconds
-		sou[0].currentTime=0;
+	/*If audio is playing*/
+	if(!isVideoActive()){
+		if(aud.currentTime>3){ //currentTime gives the current time of audio in seconds
+			aud.currentTime=0;
+		}
+		else{
+			for(i=0;i<count/2-1;i++){
+				if(fileNamesLog[i]==titl&&i!=0){ //if current media is not the first item of list, play the previous item
+					highlightIt(i-1);
+					break;}
+				else if(fileNamesLog[i]==titl&&i==0){ //if current media is the first item, play the last item
+					highlightIt(count/2-1);
+					break;}
+				else{
+					continue;} //not needed
+			}
+		}
 	}
+	/*If video is playing*/
 	else{
-		for(i=0;i<count/2;i++){
-			if(fileNamesLog[i]==titl&&i!=0){ //if current audio is not the first item of list, play the previous item
-				highlightIt(i-1);
-				break;}
-			else if(fileNamesLog[i]===titl&&i==0){ //if current audio is the first item, play the last item
-				highlightIt(count/2-1);
-				break;}
-			else{
-				continue;} //not needed
+		if(vid.currentTime>3){ //currentTime gives the current time of video in seconds
+			vid.currentTime=0;
+		}
+		else{
+			for(i=0;i<count/2;i++){
+				if(fileNamesLog[i]==titl1&&i!=0){ //if current media is not the first item of list, play the previous item
+					highlightIt(i-1);
+					break;}
+				else if(fileNamesLog[i]==titl1&&i==0){ //if current media is the first item, play the last item
+					highlightIt(count/2-1);
+					break;}
+				else{
+					continue;} //not needed
+			}
 		}
 	}
     }
@@ -286,36 +338,63 @@
      * Generic function to get the tags after they have been loaded after upload
      */
     function showTags(url,file,index) {
-      var tags = ID3.getAllTags(url);
-      console.log(tags);
-      if(tags.title==undefined){
-		fileNamesLog[index]=url;
-		document.getElementById('title').textContent = url;
+      var aud=document.getElementById('sound');
+      var med=document.getElementById('media');
+      /*VIDEO*/
+      if(url.slice(-3)=='ebm'||url.slice(-3)=='mp4'||url.slice(-3)=='mkv'){
+	fileNamesLog[index]=url;
+	document.getElementById('soundD').setAttribute('style','display:none;');
+	aud.pause();aud.currentTime=0;
+	document.getElementById('mediaD').setAttribute('style','display:block;');
+	document.getElementsByClassName('title')[1].textContent = url; //For Video
+	med.src = URL.createObjectURL(file);
+	med.play();
       }
+      /*AUDIO*/
       else{
+	var tags = ID3.getAllTags(url);
+	console.log(tags);
+	document.getElementById('mediaD').setAttribute('style','display:none;');
+	med.pause();med.currentTime=0;
+	document.getElementById('soundD').setAttribute('style','display:block;');
+	if(tags.title==undefined){
+		fileNamesLog[index]=url;
+		document.getElementsByClassName('title')[0].textContent = url;
+	}
+	else{
 		fileNamesLog[index]=tags.title;
-		document.getElementById('title').textContent = tags.title;
-      }
-      document.getElementById('artist').textContent = tags.artist || "";
-      document.getElementById('album').textContent = tags.album || "";
-      var image = tags.picture;
-      if (image) {
-        var base64String = "";
-        for (var i = 0; i < image.data.length; i++) {
-            base64String += String.fromCharCode(image.data[i]);
-        }
-        var base64 = "data:" + image.format + ";base64," +
+		document.getElementsByClassName('title')[0].textContent = tags.title;
+	}
+	document.getElementById('artist').textContent = tags.artist || "";
+	document.getElementById('album').textContent = tags.album || "";
+	aud.src = URL.createObjectURL(file);
+	aud.play();
+	var image = tags.picture;
+	if (image) {
+		var base64String = "";
+		for (var i = 0; i < image.data.length; i++) {
+			base64String += String.fromCharCode(image.data[i]);
+		}
+		var base64 = "data:" + image.format + ";base64," +
                 window.btoa(base64String);
-	document.getElementById('picture').setAttribute('src',base64);
-	document.getElementById('picture').setAttribute('alt',url);
-      } 
-      else {
-        document.getElementById('picture').setAttribute('src','images/cplogorArt.png');
-	document.getElementById('picture').setAttribute('alt','coolPlay logo');
+		document.getElementById('picture').setAttribute('src',base64);
+		document.getElementById('picture').setAttribute('alt',url);
+	} 
+	else {
+		document.getElementById('picture').setAttribute('src','images/cplogorArt.png');
+		document.getElementById('picture').setAttribute('alt','coolPlay logo');
+	}
       }
-      var sound = document.getElementById('sound');
-      sound.src = URL.createObjectURL(file);
-      sound.play();
+    }
+    
+    
+    
+    /*This tells if or not the video block is active,i.e. currently video or adio is playing*/
+    function isVideoActive(){
+	if(document.getElementById('mediaD').getAttribute('style')=='display:none;'){
+		return 0;}
+	else{
+		return 1;}
     }
 </script>
 </body>
