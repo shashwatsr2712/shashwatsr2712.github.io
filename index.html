@@ -245,9 +245,11 @@
 	var i;
 	for(i=0;i<count/2;i++){
 		if(fileNamesLog[i]==titl&&i!=count/2-1){ //if the ended audio is not the last item of list, play the next item
-			highlightIt(i+1);}
+			highlightIt(i+1);
+			break;}
 		else if(fileNamesLog[i]===titl&&i==count/2-1){ //if ended audio is the last item, play the first item
-			highlightIt(0);}
+			highlightIt(0);
+			break;}
 		else{
 			continue;} //not needed
 	}
@@ -267,9 +269,11 @@
 	else{
 		for(i=0;i<count/2;i++){
 			if(fileNamesLog[i]==titl&&i!=0){ //if current audio is not the first item of list, play the previous item
-				highlightIt(i-1);}
+				highlightIt(i-1);
+				break;}
 			else if(fileNamesLog[i]===titl&&i==0){ //if current audio is the first item, play the last item
-				highlightIt(count/2-1);}
+				highlightIt(count/2-1);
+				break;}
 			else{
 				continue;} //not needed
 		}
@@ -284,8 +288,14 @@
     function showTags(url,file,index) {
       var tags = ID3.getAllTags(url);
       console.log(tags);
-      document.getElementById('title').textContent = tags.title || "";
-      fileNamesLog[index]=tags.title || "";
+      if(tags.title==undefined){
+		fileNamesLog[index]=url;
+		document.getElementById('title').textContent = url;
+      }
+      else{
+		fileNamesLog[index]=tags.title;
+		document.getElementById('title').textContent = tags.title;
+      }
       document.getElementById('artist').textContent = tags.artist || "";
       document.getElementById('album').textContent = tags.album || "";
       var image = tags.picture;
