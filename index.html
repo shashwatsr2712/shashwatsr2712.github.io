@@ -65,7 +65,7 @@
 	<nav class="navbar fixed-top navbar-light bg-warning">
 	<a href="" class="navbar-brand" data-toggle="modal" data-target="#myModal" style="font-style:italic;"><img src="images/cplogowcNavLogo.png" alt="coolPlay Logo"/> &nbsp;COOLPLAY&trade;</a>
 	<div class="ml-auto">
-		<button type="button" class="rpt btn btn-outline-danger" onclick="repeatToggle()"><b>Repeat</b></button>
+		<button type="button" id="rpt" class="btn btn-outline-danger" onclick="repeatToggle()"><b>Repeat</b></button>
 		<button type="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -84,6 +84,11 @@
 	<div id="bgimg">
 	<br/><br/><br/><br/>
 
+	<!--Success alert-->
+	<div id="addSuccess" class="alert alert-success" style="display:none;">
+		<strong>Success!</strong> Item added to Playlist.
+	</div>
+	
 	<!--Modal for About section-->
 	<div id="myModal" class="modal fade">
 		<div class="modal-dialog">
@@ -138,10 +143,11 @@
 	
 	<hr> <!--horizontal divider line-->
 	
-	<input class="btn btn-info" type="file" id="file" onchange="loadFile(this)"><br/><br/>
-	<h3 style="font-family:courier;color:black;font-style:bold;">PlayList <a id="playlistToggle" class="fa fa-arrow-circle-down" style="text-decoration" href="javascript:showHidePlaylist();"></a>&nbsp;
-	<button class="rpt btn btn-outline-danger" onclick="repeatToggle()"><b>Repeat</b></button></h3><br/>
-	<ul id="playlist" class="list-group" type="square" style="font-size:1.2em;font-style:italic;color:black;word-wrap:break-word;">
+	<input class="btn btn-info" type="file" id="file" onchange="loadFile(this)"><br/><br/><br/>
+	<h3 style="font-family:courier;color:black;font-style:bold;">
+		<a id="playlistToggle" class="fa fa-arrow-circle-down" href="javascript:showHidePlaylist();" style="text-decoration:none;"></a>&nbsp;PlayList <span id="countBadge" class="badge badge-primary"></span>
+	</h3>
+	<ul id="playlist" class="list-group" type="square" style="font-size:1.1em;font-style:italic;color:black;word-wrap:break-word;">
 		<!--<li>Here's your playList </li>-->
 	</ul>
 	</div>
@@ -150,11 +156,11 @@
 	<footer id="foot">
 		<center>
 			<p><h6 style="display:inline;font-style:italic;">COOLPLAY&copy; 2019&nbsp;|&nbsp;WRITE TO US:</h6> <a href="mailto:shashwatsr2712@gmail.com">shashwatsr2712@gmail.com</a></p>
-			<a href="https://twitter.com/ShashwatSuny" target="_blank" class="awesome fab fa-twitter" style="color:white;"></a>&nbsp;
-			<a href="https://www.facebook.com/shashwat.srivastav.3" target="_blank" class="awesome fab fa-facebook" style="color:white;"></a>
-			<a href="https://github.com/shashwatsr2712/" target="_blank" class="awesome fab fa-github" style="font-size:40px;color:black;"></a>&nbsp;
-			<a href="https://www.linkedin.com/in/shashwatsr2712" target="_blank" class="awesome fab fa-linkedin" style="color:white;"></a>&nbsp;
-			<a href="https://www.quora.com/profile/%E0%A4%B6%E0%A4%BE%E0%A4%B6%E0%A5%8D%E0%A4%B5%E0%A4%A4-%E0%A4%B6%E0%A5%8D%E0%A4%B0%E0%A5%80%E0%A4%B5%E0%A4%BE%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%B5-Shashwat-Srivastava" target="_blank" class="awesome fab fa-quora" style="color:white;"></a>
+			<a href="https://twitter.com/ShashwatSuny" target="_blank" class="awesome fab fa-twitter" style="color:white;text-decoration:none;"></a>&nbsp;
+			<a href="https://www.facebook.com/shashwat.srivastav.3" target="_blank" class="awesome fab fa-facebook" style="color:white;text-decoration:none;"></a>
+			<a href="https://github.com/shashwatsr2712/" target="_blank" class="awesome fab fa-github" style="font-size:40px;color:black;text-decoration:none;"></a>&nbsp;
+			<a href="https://www.linkedin.com/in/shashwatsr2712" target="_blank" class="awesome fab fa-linkedin" style="color:white;text-decoration:none;"></a>&nbsp;
+			<a href="https://www.quora.com/profile/%E0%A4%B6%E0%A4%BE%E0%A4%B6%E0%A5%8D%E0%A4%B5%E0%A4%A4-%E0%A4%B6%E0%A5%8D%E0%A4%B0%E0%A5%80%E0%A4%B5%E0%A4%BE%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%B5-Shashwat-Srivastava" target="_blank" class="awesome fab fa-quora" style="color:white;text-decoration:none;"></a>
 		</center>
 	</footer>
 	</div>
@@ -208,6 +214,11 @@
       document.getElementById("ham").appendChild(itemn);
       /*Adding item to Playlist in navbar done*/
       
+      document.getElementById("countBadge").textContent=count/2 +1; //Displaying count of media in Playlist
+      if(count==0){
+	document.getElementById("countBadge").setAttribute("data-toggle","tooltip");document.getElementById("countBadge").setAttribute("data-placement","top");document.getElementById("countBadge").setAttribute("title","Number of items in Playlist");
+      }
+      
       ID3.loadTags(url, function() {
         showTags(url,file,count/2);
          }, {
@@ -219,6 +230,10 @@
        /*sound.onend = function(e) {
        URL.revokeObjectURL(this.src);
 	}*/
+	
+	//Alert on successful addition to playlist
+	document.getElementById('addSuccess').style.display="block";
+	setTimeout(function(){document.getElementById('addSuccess').style.display="none";},3000);
     }
     
     
@@ -240,14 +255,14 @@
     function repeatToggle(){
 	var aud=document.getElementById("sound");
 	var vid=document.getElementById("media");
-	var bt=document.getElementsByClassName("rpt");
-	if(bt[0].getAttribute("class")=="rpt btn btn-outline-danger"){
+	var bt=document.getElementById("rpt");
+	if(bt.getAttribute("class")=="btn btn-outline-danger"){
 		aud.setAttribute("loop","loop");vid.setAttribute("loop","loop");
-		bt[0].setAttribute("class","rpt btn btn-primary");bt[1].setAttribute("class","rpt btn btn-primary");
+		bt.setAttribute("class","btn btn-primary");
 	}
 	else{
 		aud.removeAttribute("loop");vid.removeAttribute("loop","loop");
-		bt[0].setAttribute("class","rpt btn btn-outline-danger");bt[1].setAttribute("class","rpt btn btn-outline-danger");
+		bt.setAttribute("class","btn btn-outline-danger");
 	}
     }
     
