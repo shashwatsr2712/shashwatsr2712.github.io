@@ -139,9 +139,9 @@
 	<hr> <!--horizontal divider line-->
 	
 	<input class="btn btn-info" type="file" id="file" onchange="loadFile(this)"><br/><br/>
-	<h3 style="font-family:courier;color:black;font-style:bold;">PlayList <i class="fa fa-arrow-circle-down"></i>&nbsp;
+	<h3 style="font-family:courier;color:black;font-style:bold;">PlayList <a id="playlistToggle" class="fa fa-arrow-circle-down" style="text-decoration" href="javascript:showHidePlaylist();"></a>&nbsp;
 	<button class="rpt btn btn-outline-danger" onclick="repeatToggle()"><b>Repeat</b></button></h3><br/>
-	<ul id="playlist" type="square" style="font-size:1.2em;font-style:italic;color:black;word-wrap:break-word;">
+	<ul id="playlist" class="list-group" type="square" style="font-size:1.2em;font-style:italic;color:black;word-wrap:break-word;">
 		<!--<li>Here's your playList </li>-->
 	</ul>
 	</div>
@@ -185,11 +185,14 @@
 
 	/*Adding item to Playlist begins*/
       var count=document.querySelectorAll("li").length; //count stores the total number of list (li) tags. Actual number of songs is half of that.
+      if(count==0){ //As soon as first item added to playlist, turn the arrow face up
+	document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-up");}
       var item=document.createElement("li");var item2=document.createElement("a");
       var str="javascript:highlightIt("+count/2+")";
       item2.setAttribute("href",str);
-      item2.appendChild(document.createTextNode(url));
+      item2.appendChild(document.createTextNode((count/2+1)+". "+url));
       item2.appendChild(document.createElement("br"));item2.appendChild(document.createElement("br"));
+      item.setAttribute("class","list-group-item list-group-item-primary");item.setAttribute("style","padding-bottom:0px;");
       item.appendChild(item2);
       document.getElementById("playlist").appendChild(item);
 	/*Adding item to Playlist done*/
@@ -334,6 +337,24 @@
     
     
     
+    /*This function shows/hides the Playlist on clicking the fa-arrow icon*/
+    function showHidePlaylist(){
+	if(document.querySelectorAll('li').length!=0){
+		var pl=document.getElementById('playlist');
+		if(document.getElementById('playlist').style.display=="none"){
+			pl.style.display="block";
+			document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-up");
+		}
+		else{
+			pl.style.display="none";
+			document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-down");
+		}
+	}
+    }
+    
+    
+    
+    // This here is the most important function
     /**
      * Generic function to get the tags after they have been loaded after upload
      */
@@ -389,9 +410,9 @@
     
     
     
-    /*This tells if or not the video block is active,i.e. currently video or adio is playing*/
+    /*This tells if or not the video block is active,i.e. currently video(returns 1) or audio(returns 0) is playing*/
     function isVideoActive(){
-	if(document.getElementById('mediaD').getAttribute('style')=='display:none;'){
+	if(document.getElementById('mediaD').style.display=='none'){
 		return 0;}
 	else{
 		return 1;}
