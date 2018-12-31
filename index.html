@@ -214,17 +214,17 @@
       document.getElementById("ham").appendChild(itemn);
       /*Adding item to Playlist in navbar done*/
       
-      document.getElementById("countBadge").textContent=count/2 +1; //Displaying count of media in Playlist
+      //Displaying count of media in Playlist
+      document.getElementById("countBadge").textContent=count/2 +1; 
       if(count==0){
 	document.getElementById("countBadge").setAttribute("data-toggle","tooltip");document.getElementById("countBadge").setAttribute("data-placement","top");document.getElementById("countBadge").setAttribute("title","Number of items in Playlist");
       }
       
-      ID3.loadTags(url, function() {
-        showTags(url,file,count/2);
-         }, {
-        tags: ["title","artist","album","picture"],
-	 dataReader: ID3.FileAPIReader(file)
-       });
+      //For first selection of file, play the song/video (for further additions, item is only 'added to playlist'; this ensures uninterrupted playback while making playlist.)
+      if(count==0){
+      highlightIt(count/2);
+      }
+       
        // not really needed in this exact case, but since it is really important in other cases,
        // don't forget to revoke the blobURI when you don't need it
        /*sound.onend = function(e) {
