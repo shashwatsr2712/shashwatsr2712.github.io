@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+-<!DOCTYPE html>
 <html>
 <head>
 	<title>coolPlay</title>
@@ -62,7 +62,8 @@
 </head>
 
 <body>
-	<nav class="navbar fixed-top navbar-light bg-warning">
+	<!--z-index has been used in navbar and alert divs to position alert divs on top of navbars-->
+	<nav class="navbar fixed-top navbar-light bg-warning" style="z-index:1;">
 	<a href="" class="navbar-brand" data-toggle="modal" data-target="#myModal" style="font-style:italic;"><img src="images/cplogowcNavLogo.png" alt="coolPlay Logo"/> &nbsp;COOLPLAY&trade;</a>
 	<div class="ml-auto">
 		<button type="button" id="rpt" class="btn btn-outline-danger" onclick="repeatToggle()"><b>Repeat</b></button>
@@ -84,11 +85,21 @@
 	<div id="bgimg">
 	<br/><br/><br/><br/>
 
-	<!--Success alert-->
-	<div id="addSuccess" class="alert alert-success" style="display:none;">
+	<!--Success alert. The css fixes it just below navbar even while scrolling-->
+	<div id="addSuccess" class="alert alert-success" style="display:none;position:fixed;top:0px;width:100%;height:60px;z-index:2;">
 		<strong>Success!</strong> Item added to Playlist.
 	</div>
 	
+	<!--Error alert. The css fixes it just below navbar even while scrolling-->
+	<div id="errorFormat" class="alert alert-danger" style="display:none;position:fixed;top:0px;width:100%;height:60px;z-index:2;">
+		<strong>Error!</strong> File Format not supported.
+	</div>
+	
+	<!--Error alert. The css fixes it just below navbar even while scrolling-->
+	<div id="errorRepetition" class="alert alert-danger" style="display:none;position:fixed;top:0px;width:100%;height:60px;z-index:2;">
+		<strong>Oops!</strong> File has already been added.
+	</div>
+
 	<!--Modal for About section-->
 	<div id="myModal" class="modal fade">
 		<div class="modal-dialog">
@@ -134,7 +145,7 @@
 	
 	<!--VIDEO-->
 	<center id="mediaD" style="display:none">
-		<video id="media" width="100%" height="100%" controls="controls" onended="autoplayNext()"></video><br/>
+		<video id="media" width="100%" controls="controls" onended="autoplayNext()"></video><br/><br/>
 		<a href="javascript:playPrev();"><i class="far fa-hand-point-left fa-2x"></i></a>
 		<a href="javascript:autoplayNext();"><i class="far fa-hand-point-right fa-2x"></i></a><br/><br/>
 		<p style="font-family:courier;color:black;font-size:1.1em;text-align:center;overflow:auto;"><b>Title:</b><span class="title">__________</span></p>
@@ -177,7 +188,8 @@
     }, {
       tags: ["title","artist","album","picture"]
     });*/
-    
+
+
     var filesLog=[]; //this stores the 'file type' info of all items added to playlist
     var fileNamesLog=[]; //this stores the corresponding titles of all items. For audios, it's from metadata. For videos (and audios without title in metadata), it's the original url.
     /**
@@ -186,11 +198,29 @@
     function loadFile(inp) {
       var file = inp.files[0];
       var url = file.urn || file.name;
+      var count=document.querySelectorAll("li").length; //count stores the total number of list (li) tags. Actual number of songs is half of that.
+      
+      //Check if added file is of valid extension (audio/video) 
+      var ext=url.slice(-3);
+      if(ext!="mp3"&&ext!="wav"&&ext!="wma"&&ext!="ogg"&&ext!="mp4"&&ext!="mkv"&&ext!="ebm"){
+		document.getElementById('errorFormat').style.display="block";
+		setTimeout(function(){document.getElementById('errorFormat').style.display="none";},3000);
+		return;
+      }
+      
+      //Check if added file already present in Playlist so far
+      var i;
+      for(i=0;i<count/2;i++){
+	if(filesLog[i].name==url || filesLog[i].urn==url){
+		document.getElementById('errorRepetition').style.display="block";
+		setTimeout(function(){document.getElementById('errorRepetition').style.display="none";},3000);
+		return;
+	}
+      }
       
       filesLog.push(file);
 
 	/*Adding item to Playlist begins*/
-      var count=document.querySelectorAll("li").length; //count stores the total number of list (li) tags. Actual number of songs is half of that.
       if(count==0){ //As soon as first item added to playlist, turn the arrow face up
 	document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-up");}
       var item=document.createElement("li");var item2=document.createElement("a");
