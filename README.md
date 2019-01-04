@@ -18,5 +18,7 @@ Non-scrolling navbar issue fixed for mobile devices.
 * Bug fixes for Previous/Next and Autoplay.
 * Video support has been added for webm, mp4 and mkv formats.
 * Improved User Experience: For first selection of file, the song/video is played. For further additions, item is only 'added to playlist'; this ensures uninterrupted playback while making playlist.
+### Update (Improvements):
+* Alerts for unsupported file formats and repeated media in playlist.
 #
 ***The project is in development phase. More features and improvements would be added soon.***
