@@ -66,6 +66,8 @@
 	<nav class="navbar fixed-top navbar-light bg-warning" style="z-index:1;">
 	<a href="" class="navbar-brand" data-toggle="modal" data-target="#myModal" style="font-style:italic;"><img src="images/cplogowcNavLogo.png" alt="coolPlay Logo"/> &nbsp;COOLPLAY&trade;</a>
 	<div class="ml-auto">
+		<!--Search bar for xl, lg and md-->
+		<input class="d-none d-md-inline" style="border:none;padding:6px;" id="search" type="text" placeholder="Search..."><button class="d-none d-md-inline btn btn-secondary" onclick="showResults()" id="searchR">Go</button>
 		<button type="button" id="rpt" class="btn btn-outline-danger" onclick="repeatToggle()"><b>Repeat</b></button>
 		<button type="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -73,8 +75,8 @@
 	</div>
 	<div class="collapse navbar-collapse" id="myNavbar">
 		<ul class="navbar-nav mr-auto" id="ham"><br/>
-			<div class="nav-item .d-none .d-sm-block">
-				<input class="btn btn-sm btn-info" type="file" id="file" onchange="loadFile(this)"><br/>
+			<div class="nav-item">
+				<input class="btn btn-info" type="file" id="file" onchange="loadFile(this)"><br/>
 			</div>
 			<!--<li>Here's your playList </li>-->
 		</ul>
@@ -127,10 +129,29 @@
 		</div>
 	</div>
 
+	<!--Modal For Search Section-->
+	<div class="modal fade" id="searchModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">Search Results</h3>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body" id="searchResults">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<!--Container opens-->
 	<div class="container">
 	<!--AUDIO-->
 	<center id="soundD"><figure class="figure" id="bgimg2"><!--initially style="background-color:#2EB1FF;" instead of bg-img-->
+		<!--Search bar for sm and xs only-->
+		<input class="d-inline d-md-none" style="border:none;padding:6px;float:left;width:80%;" id="search" type="text" placeholder="Search..."><button class="d-block d-md-none btn btn-secondary" onclick="showResults()" id="searchR" style="width:20%;">Go</button>
 		<img id="picture" src="images/cplogorArt.png" alt="coolPlay logo" class="figure-img img-fluid img-thumbnail rounded"/>
 		<figcaption class="figure-caption" style="font-family:courier;color:black;font-size:1.1em;text-align:center;overflow:auto;">
 			<a href="javascript:playPrev();"><i class="far fa-hand-point-left fa-2x"></i></a>
@@ -461,6 +482,41 @@
 		return 0;}
 	else{
 		return 1;}
+    }
+    
+    
+
+        // jQuery to show modal
+	$("#searchR").click(function(){
+		$("#searchModal").modal();
+	});
+    // function to show search results in modal
+    function showResults(){
+	var t=document.getElementById("search").value;
+	var resultCount=0; //Number of results matching search query
+	var i;
+	var count=document.querySelectorAll("li").length;
+	/*Remove the previous search results from search modal*/
+	var foo = document.getElementById('searchResults');
+	while(foo.firstChild) 
+		foo.removeChild(foo.firstChild);
+	
+	if(t!=""){
+		for(i=0;i<count/2;i++){
+			var url=filesLog[i].urn || filesLog[i].name;
+			if(url.toLowerCase().includes(t.toLowerCase())){ //this function checks if query string is present in any list item
+				resultCount+=1;
+				var par=document.createElement("p");var anc=document.createElement("a");
+				anc.setAttribute("href","javascript:highlightIt("+i+")");
+				anc.appendChild(document.createTextNode(url));
+				par.appendChild(anc);
+				document.getElementById("searchResults").appendChild(par);
+			}
+		}
+	}
+	if(resultCount==0){
+		document.getElementById("searchResults").appendChild(document.createTextNode("Nothing Found !!"));
+	}
     }
 </script>
 </body>
