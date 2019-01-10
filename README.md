@@ -20,5 +20,7 @@ Non-scrolling navbar issue fixed for mobile devices.
 * Improved User Experience: For first selection of file, the song/video is played. For further additions, item is only 'added to playlist'; this ensures uninterrupted playback while making playlist.
 ### Update (Improvements):
 * Alerts for unsupported file formats and repeated media in playlist.
+### Update (New Feature):
+* Search Feature added.
 #
 ***The project is in development phase. More features and improvements would be added soon.***
