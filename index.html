@@ -12,9 +12,67 @@
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.4/angular.min.js"></script>
 	<script src="id3js/id3-min.js" type="text/javascript"></script>
 	<style>
-	#bgimg{background:url('images/bg1.jpg') no-repeat center center;background-size:cover;}
-	#bgimg2{background:url('images/bg2.jpg') no-repeat center center;background-size:cover;}
-	a:link{color:black;}
+	#bgimg{background:url('images/bg5.jpg') no-repeat center center;background-size:cover;background-attachment:scroll;}
+	#bgimg2{background:repeating-linear-gradient(to right bottom,rgb(255,255,0,0.7) 10%,rgb(255,192,203,0.7) 20%,rgb(135,206,235,0.7) 30%,rgb(255,255,0,0.7) 40%) no-repeat center center;background-size:cover;border-radius:10px;}
+	#bgimg3{background:url('images/bg6.jpg') no-repeat center center;background-size:cover;border-radius:10px;}
+
+	/*Custom color for navbar*/
+	.bg-custom{
+		background-color:skyblue;
+	}
+
+	/*Infinite logo animation on navbar*/
+	@keyframes logo{
+		20%{transform:rotateX(360deg);}
+		50%{transform:translateX(170px);}
+		60%{transform:translateX(0px);}
+		90%{transform:translateX(-170px);}
+		100%{transform:translateX(0px);}
+	}
+	#logoIM{
+		animation-name:logo;
+		animation-delay:1s;
+		animation-duration:3s;
+		animation-iteration-count:linear;
+		animation-iteration-count: infinite;
+	}
+
+	/*@keyframes overl{
+		0%{display:block;}
+		20%{background-color:rgb(255,255,0);}
+		40%{background-color:rgb(223, 111, 129);}
+		60%{background-color:rgb(135,206,235);}
+		80%{background-color:rgb(255,255,0);}
+		100%{background-color:rgb(135,206,235);display:none;position:static;}
+	}
+	#overlay{
+		position:fixed;
+		background:rgba(0,0,0,0.5);
+		width:100%;height:100%;
+		top:0;right:0;bottom:0;left:0;
+		animation-name:overl;
+		animation-timing-function:ease-out;
+		animation-fill-mode:forwards;
+		animation-delay:0.5s;
+		animation-duration:6s;
+	}*/
+
+	/*Starting animation for media player card on page load*/
+	@keyframes rot{
+		0%{transform:translateX(0px);}
+		25%{transform:translateX(100px);}
+		75%{transform:translateX(-100px);}
+		100%{transform:translateX(0px);}
+	}
+	#soundD{
+		animation-name:rot;
+		animation-delay: 0.5s;
+		animation-duration:0.5s;
+	}
+
+	a:link{color:black;text-decoration:none;}
+	a:hover{color:rgb(128,0,128);}
+	ul#playlist li a:hover{color:rgb(128,0,128);text-decoration:overline underline;}
 	
 	/*This is the fix for non-scrolling navbar hamburger menu*/
 	.fixed-top .navbar-collapse {
@@ -56,19 +114,23 @@
 	
 	#foot{
 	width:100%;padding:5px 0px 10px 0px;margin-top:200px;background-color:#D8D7CD;}
+
 	</style>
 	<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	<!--IMAGES: Icon:cplogowcIcon.ico; Navbar-logo:cplogowcNavLogo.png; Modal:cplogorModal.png; Default-Album-Art:cplogorArt.png;-->
 </head>
 
 <body>
+	<div id="overlay">	
+	</div>
+
 	<!--z-index has been used in navbar and alert divs to position alert divs on top of navbars-->
-	<nav class="navbar fixed-top navbar-light bg-warning" style="z-index:1;">
-	<a href="" class="navbar-brand" data-toggle="modal" data-target="#myModal" style="font-style:italic;"><img src="images/cplogowcNavLogo.png" alt="coolPlay Logo"/> &nbsp;COOLPLAY&trade;</a>
+	<nav class="navbar fixed-top navbar-light bg-custom" style="z-index:1;">
+	<a href="" class="navbar-brand" data-toggle="modal" data-target="#myModal" style="font-style:italic;"><img src="images/cplogowcNavLogo.png" alt="coolPlay Logo" id="logoIM"/> &nbsp;COOLPLAY&trade;</a>
 	<div class="ml-auto">
 		<!--Search bar for xl, lg and md-->
 		<input class="d-none d-md-inline" style="border:none;padding:6px;" id="search" type="text" placeholder="Search..."><button id="searchR" class="d-none d-md-inline btn btn-secondary" onclick="showResults()">Go</button>
-		<button type="button" id="rpt" class="btn btn-outline-danger" onclick="repeatToggle()"><b>Repeat</b></button>
+		<button type="button" id="rpt" class="btn btn-outline-danger" onclick="repeatToggle()" style="color:white;"><b>Repeat</b></button>
 		<button type="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -110,21 +172,22 @@
 					<h3 class="modal-title"><center><img src="images/cplogorModal.png" alt="coolPlay Logo" class="img-fluid rounded"/></center></h3>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
-				<div class="modal-body" style="font-family:times;" id="bgimg2">
-					<p><h6><strong>coolPlay</strong> allows you to make a playlist of your favourite songs by selecting them from your device. So just <strong>Add & Play</strong>.</h6></p><br/>
-					<p><h6><b>Get Started: </b>
+				<div class="modal-body" style="font-family:serif;" id="bgimg2">
+					<p><h5><strong>coolPlay</strong> allows you to make a playlist of your favourite songs by selecting them from your device. So just <strong>Add & Play</strong>.</h5></p><br/>
+					<p><h5><b>Get Started: </b>
 						<ul type="circle">
-							<h6>1.Add new item to the list by selecting a file from your device.</h6>
-							<h6>2.Select any item from the list to make its metadata (album art, artist, album) and audio controls visible</h6>
-							<h6>3.Click on <strong>Repeat</strong> to turn repetition on. Click on it again to turn it off.</h6>
-							<h6>4.Playlist can also be accessed from navigation bar.</h6>
-						</ul></h6></p>
-					<p><h6>Simple enough, isn't it?</h6></p><br/>
-					<p><h6><i>This project is currently in development phase. More features and improvements coming soon...</i></h6></p>
+							<h5>1.Add new item to the list by selecting a file from your device.</h5>
+							<h5>2.Select any item from the list to make its metadata (album art, artist, album) and audio controls visible</h5>
+							<h5>3.Click on <strong>Repeat</strong> to turn repetition on. Click on it again to turn it off.</h5>
+							<h5>4.Playlist can also be accessed from navigation bar.</h5>
+						</ul></h5></p>
+					<p><h5>Simple enough, isn't it?</h5></p><br/>
+					<p><h5><i>This project is currently in development phase. More features and improvements coming soon...</i></h5></p>
+					<button type="button" class="btn btn-info" data-dismiss="modal" style="float:right;">Close</button>
 				</div>
-				<div class="modal-footer" id="bgimg">
+				<!--div class="modal-footer" id="bgimg">
 					<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-				</div>
+				</div-->
 			</div>
 		</div>
 	</div>
@@ -148,12 +211,19 @@
 	
 	<!--Container opens-->
 	<div class="container">
+	<!--UpperSec Div begins-->
+	<div id="uppersec">
 	<!--Search bar for sm and xs only-->
 	<input class="d-inline d-md-none" style="border:none;padding:6px;float:left;width:80%;" id="search1" type="text" placeholder="Search..."><button id="searchR1" class="d-block d-md-none btn btn-secondary" onclick="showResults1()" id="searchR" style="width:20%;">Go</button>
 	<!--AUDIO-->
 	<center id="soundD"><figure class="figure" id="bgimg2"><!--initially style="background-color:#2EB1FF;" instead of bg-img-->
-		<img id="picture" src="images/cplogorArt.png" alt="coolPlay logo" class="figure-img img-fluid img-thumbnail rounded"/>
-		<figcaption class="figure-caption" style="font-family:courier;color:black;font-size:1.1em;text-align:center;overflow:auto;">
+		<div style="position:relative;">
+			<img id="picture" src="images/cplogorArt.png" alt="coolPlay logo" class="figure-img img-fluid rounded" style="margin-bottom:20px;margin-left:auto;margin-right:auto;"/>
+			<!--Position the canvas (with animation music bars) inside the Cover-Art/Image)-->
+			<canvas id="analyser_render" style="position:absolute;width:300px;height:100px;left:50%;top:50%;margin-left:-150px;margin-top:-50px;display:none;">
+			</canvas>
+		</div>
+		<figcaption class="figure-caption" style="font-family:courier;color:black;font-size:1.1em;text-align:center;">
 			<a href="javascript:playPrev();"><i class="far fa-hand-point-left fa-2x"></i></a>
 			<audio id="sound" controls="controls" onended="autoplayNext()"></audio>
 			<a href="javascript:autoplayNext();"><i class="far fa-hand-point-right fa-2x"></i></a><br/><br/>
@@ -172,14 +242,25 @@
 		<p style="font-family:courier;color:black;font-size:1.1em;text-align:center;overflow:auto;"><b>Title:</b><span class="title">__________</span></p>
 	</center>
 	<!--VIDEO-->
+	</div>
+	<!--UpperSec Div ends-->
+	<br/><br/><br/>
+	</div>
+	<!--Container ends-->
+	</div>
+	<!--"bgimg" div ends-->
+
+	<!--horizontal divider line (hr); Add if needed-->
 	
-	<hr> <!--horizontal divider line-->
-	
+	<!--LowerSec Div begins-->
+	<div id="bgimg3">
+	<!--Container opens-->
+	<div class="container">
 	<input class="btn btn-info" type="file" id="file" onchange="loadFile(this)"><br/><br/><br/>
-	<h3 style="font-family:courier;color:black;font-style:bold;">
-		<a id="playlistToggle" class="fa fa-arrow-circle-down" href="javascript:showHidePlaylist();" style="text-decoration:none;"></a>&nbsp;PlayList <span id="countBadge" class="badge badge-primary"></span>
+	<h3 style="font-family:courier;color:black;font-style:bold;float:right;">
+		<a id="playlistToggle" class="fa fa-arrow-circle-down" href="javascript:showHidePlaylist();" title="Collapse/View Playlist">&nbsp;PlayList</a>&nbsp;<span id="countBadge" class="badge badge-primary"></span>
 	</h3>
-	<ul id="playlist" class="list-group" type="square" style="font-size:1.1em;font-style:italic;color:black;word-wrap:break-word;">
+	<ul id="playlist" class="list-group" type="square" style="margin-top:2.5em;font-size:1.1em;font-style:italic;color:black;word-wrap:break-word;">
 		<!--<li>Here's your playList </li>-->
 	</ul>
 	</div>
@@ -196,8 +277,13 @@
 		</center>
 	</footer>
 	</div>
-	<!--"bgimg" div ends-->
+	<!--LowerSec Div ends-->
 	
+
+
+
+
+
 	<script>
     /**
      Loading the tags using XHR.
@@ -211,6 +297,7 @@
     });*/
 
 
+	var flag=0;
     var filesLog=[]; //this stores the 'file type' info of all items added to playlist
     var fileNamesLog=[]; //this stores the corresponding titles of all items. For audios, it's from metadata. For videos (and audios without title in metadata), it's the original url.
     /**
@@ -225,36 +312,36 @@
       var ext=url.slice(-3);
       if(ext!="mp3"&&ext!="wav"&&ext!="wma"&&ext!="ogg"&&ext!="mp4"&&ext!="mkv"&&ext!="ebm"){
 		document.getElementById('errorFormat').style.display="block";
-		setTimeout(function(){document.getElementById('errorFormat').style.display="none";},3000);
+		setTimeout(function(){document.getElementById('errorFormat').style.display="none";},2000);
 		return;
       }
       
       //Check if added file already present in Playlist so far
       var i;
       for(i=0;i<count/2;i++){
-	if(filesLog[i].name==url || filesLog[i].urn==url){
-		document.getElementById('errorRepetition').style.display="block";
-		setTimeout(function(){document.getElementById('errorRepetition').style.display="none";},3000);
-		return;
-	}
+		if(filesLog[i].name==url || filesLog[i].urn==url){
+			document.getElementById('errorRepetition').style.display="block";
+			setTimeout(function(){document.getElementById('errorRepetition').style.display="none";},2000);
+			return;
+		}
       }
       
       filesLog.push(file);
 
-	/*Adding item to Playlist begins*/
+	  /*Adding item to Playlist begins*/
       if(count==0){ //As soon as first item added to playlist, turn the arrow face up
-	document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-up");}
+		document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-up");}
       var item=document.createElement("li");var item2=document.createElement("a");
       var str="javascript:highlightIt("+count/2+")";
       item2.setAttribute("href",str);
       item2.appendChild(document.createTextNode((count/2+1)+". "+url));
-      item2.appendChild(document.createElement("br"));item2.appendChild(document.createElement("br"));
-      item.setAttribute("class","list-group-item list-group-item-primary");item.setAttribute("style","padding-bottom:0px;");
+	  item2.appendChild(document.createElement("br"));item2.appendChild(document.createElement("br"));
+      item.setAttribute("class","list-group-item list-group-item-primary");item.setAttribute("style","padding-bottom:0px;margin-bottom:7px;");
       item.appendChild(item2);
       document.getElementById("playlist").appendChild(item);
-	/*Adding item to Playlist done*/
+	  /*Adding item to Playlist done*/
 	
-	/*Adding item to Playlist in navbar begins*/
+	  /*Adding item to Playlist in navbar begins*/
       var itemn=document.createElement("li");var itemn2=document.createElement("a");
       itemn2.setAttribute("href",str);
       itemn2.appendChild(document.createTextNode(url));
@@ -268,35 +355,37 @@
       //Displaying count of media in Playlist
       document.getElementById("countBadge").textContent=count/2 +1; 
       if(count==0){
-	document.getElementById("countBadge").setAttribute("data-toggle","tooltip");document.getElementById("countBadge").setAttribute("data-placement","top");document.getElementById("countBadge").setAttribute("title","Number of items in Playlist");
+		document.getElementById("countBadge").setAttribute("data-toggle","tooltip");document.getElementById("countBadge").setAttribute("data-placement","top");document.getElementById("countBadge").setAttribute("title","Number of items in Playlist");
       }
       
       //For first selection of file, play the song/video (for further additions, item is only 'added to playlist'; this ensures uninterrupted playback while making playlist.)
       if(count==0){
-      highlightIt(count/2);
+		if(ext!="mp4"&&ext!="mkv"&&ext!="ebm"){
+			flag=1;}
+    	highlightIt(count/2);
       }
        
-       // not really needed in this exact case, but since it is really important in other cases,
-       // don't forget to revoke the blobURI when you don't need it
-       /*sound.onend = function(e) {
-       URL.revokeObjectURL(this.src);
-	}*/
+      // not really needed in this exact case, but since it is really important in other cases,
+      // don't forget to revoke the blobURI when you don't need it
+      /*sound.onend = function(e) {
+      URL.revokeObjectURL(this.src);
+	  }*/
 	
-	//Alert on successful addition to playlist
-	document.getElementById('addSuccess').style.display="block";
-	setTimeout(function(){document.getElementById('addSuccess').style.display="none";},3000);
-    }
+	  //Alert on successful addition to playlist
+	  document.getElementById('addSuccess').style.display="block";
+	  setTimeout(function(){document.getElementById('addSuccess').style.display="none";},2000);
+    }    
     
     
-    
+
     // this function displays all tags from music file along with audio/video controls
     function highlightIt(index){ 
-	var url1=filesLog[index].urn || filesLog[index].name;
-	ID3.loadTags(url1, function() {
+		var url1=filesLog[index].urn || filesLog[index].name;
+		ID3.loadTags(url1, function() {
         showTags(url1,filesLog[index],index);
          }, {
         tags: ["title","artist","album","picture"],
-	 dataReader: ID3.FileAPIReader(filesLog[index])
+	 	dataReader: ID3.FileAPIReader(filesLog[index])
        });
     }
     
@@ -304,118 +393,118 @@
     
     // Turn on or off repetition
     function repeatToggle(){
-	var aud=document.getElementById("sound");
-	var vid=document.getElementById("media");
-	var bt=document.getElementById("rpt");
-	if(bt.getAttribute("class")=="btn btn-outline-danger"){
-		aud.setAttribute("loop","loop");vid.setAttribute("loop","loop");
-		bt.setAttribute("class","btn btn-primary");
-	}
-	else{
-		aud.removeAttribute("loop");vid.removeAttribute("loop","loop");
-		bt.setAttribute("class","btn btn-outline-danger");
-	}
+		var aud=document.getElementById("sound");
+		var vid=document.getElementById("media");
+		var bt=document.getElementById("rpt");
+		if(bt.getAttribute("class")=="btn btn-outline-danger"){
+			aud.setAttribute("loop","loop");vid.setAttribute("loop","loop");
+			bt.setAttribute("class","btn btn-outline-primary");
+		}
+		else{
+			aud.removeAttribute("loop");vid.removeAttribute("loop","loop");
+			bt.setAttribute("class","btn btn-outline-danger");
+		}
     }
     
     
     
     // For Autoplay/Playing Next Song
     function autoplayNext(){
-	var count=document.querySelectorAll("li").length;
-	var titl=String(document.getElementsByClassName('title')[0].textContent); // For audio
-	var titl1=String(document.getElementsByClassName('title')[1].textContent); //For video
-	var i;
-	/*If audio is playing*/
-	if(!isVideoActive()){
-		for(i=0;i<count/2;i++){
-			if(fileNamesLog[i]==titl&&i!=count/2-1){ //if the ended audio is not the last item of list, play the next item
-				highlightIt(i+1);
-				break;}
-			else if(fileNamesLog[i]===titl&&i==count/2-1){ //if ended audio is the last item, play the first item
-				highlightIt(0);
-				break;}
-			else{
-				continue;} //not needed
+		var count=document.querySelectorAll("li").length;
+		var titl=String(document.getElementsByClassName('title')[0].textContent); // For audio
+		var titl1=String(document.getElementsByClassName('title')[1].textContent); //For video
+		var i;
+		/*If audio is playing*/
+		if(!isVideoActive()){
+			for(i=0;i<count/2;i++){
+				if(fileNamesLog[i]==titl&&i!=count/2-1){ //if the ended audio is not the last item of list, play the next item
+					highlightIt(i+1);
+					break;}
+				else if(fileNamesLog[i]===titl&&i==count/2-1){ //if ended audio is the last item, play the first item
+					highlightIt(0);
+					break;}
+				else{
+					continue;} //not needed
+			}
 		}
-	}
-	/*If video is playing*/
-	else{
-		for(i=0;i<count/2;i++){
-			if(fileNamesLog[i]==titl1&&i!=count/2-1){ //if the ended video is not the last item of list, play the next item
-				highlightIt(i+1);
-				break;}
-			else if(fileNamesLog[i]===titl1&&i==count/2-1){ //if ended video is the last item, play the first item
-				highlightIt(0);
-				break;}
-			else{
-				continue;} //not needed
+		/*If video is playing*/
+		else{
+			for(i=0;i<count/2;i++){
+				if(fileNamesLog[i]==titl1&&i!=count/2-1){ //if the ended video is not the last item of list, play the next item
+					highlightIt(i+1);
+					break;}
+				else if(fileNamesLog[i]===titl1&&i==count/2-1){ //if ended video is the last item, play the first item
+					highlightIt(0);
+					break;}
+				else{
+					continue;} //not needed
+			}
 		}
-	}
     }
     
     
     
     // For playing previous song if current time < 3 secs; else play same song again
     function playPrev(){
-	var count=document.querySelectorAll("li").length;
-	var titl=String(document.getElementsByClassName('title')[0].textContent); //For audio
-	var titl1=String(document.getElementsByClassName('title')[1].textContent); //For video
-	var aud=document.getElementById("sound");
-	var vid=document.getElementById("media");
-	var i;
-	/*If audio is playing*/
-	if(!isVideoActive()){
-		if(aud.currentTime>3){ //currentTime gives the current time of audio in seconds
-			aud.currentTime=0;
-		}
-		else{
-			for(i=0;i<count/2;i++){
-				if(fileNamesLog[i]==titl&&i!=0){ //if current media is not the first item of list, play the previous item
-					highlightIt(i-1);
-					break;}
-				else if(fileNamesLog[i]==titl&&i==0){ //if current media is the first item, play the last item
-					highlightIt(count/2-1);
-					break;}
-				else{
-					continue;} //not needed
+		var count=document.querySelectorAll("li").length;
+		var titl=String(document.getElementsByClassName('title')[0].textContent); //For audio
+		var titl1=String(document.getElementsByClassName('title')[1].textContent); //For video
+		var aud=document.getElementById("sound");
+		var vid=document.getElementById("media");
+		var i;
+		/*If audio is playing*/
+		if(!isVideoActive()){
+			if(aud.currentTime>3){ //currentTime gives the current time of audio in seconds
+				aud.currentTime=0;
+			}
+			else{
+				for(i=0;i<count/2;i++){
+					if(fileNamesLog[i]==titl&&i!=0){ //if current media is not the first item of list, play the previous item
+						highlightIt(i-1);
+						break;}
+					else if(fileNamesLog[i]==titl&&i==0){ //if current media is the first item, play the last item
+						highlightIt(count/2-1);
+						break;}
+					else{
+						continue;} //not needed
+				}
 			}
 		}
-	}
-	/*If video is playing*/
-	else{
-		if(vid.currentTime>3){ //currentTime gives the current time of video in seconds
-			vid.currentTime=0;
-		}
+		/*If video is playing*/
 		else{
-			for(i=0;i<count/2;i++){
-				if(fileNamesLog[i]==titl1&&i!=0){ //if current media is not the first item of list, play the previous item
-					highlightIt(i-1);
-					break;}
-				else if(fileNamesLog[i]==titl1&&i==0){ //if current media is the first item, play the last item
-					highlightIt(count/2-1);
-					break;}
-				else{
-					continue;} //not needed
+			if(vid.currentTime>3){ //currentTime gives the current time of video in seconds
+				vid.currentTime=0;
+			}
+			else{
+				for(i=0;i<count/2;i++){
+					if(fileNamesLog[i]==titl1&&i!=0){ //if current media is not the first item of list, play the previous item
+						highlightIt(i-1);
+						break;}
+					else if(fileNamesLog[i]==titl1&&i==0){ //if current media is the first item, play the last item
+						highlightIt(count/2-1);
+						break;}
+					else{
+						continue;} //not needed
+				}
 			}
 		}
-	}
     }
     
     
     
     /*This function shows/hides the Playlist on clicking the fa-arrow icon*/
     function showHidePlaylist(){
-	if(document.querySelectorAll('li').length!=0){
-		var pl=document.getElementById('playlist');
-		if(document.getElementById('playlist').style.display=="none"){
-			pl.style.display="block";
-			document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-up");
+		if(document.querySelectorAll('li').length!=0){
+			var pl=document.getElementById('playlist');
+			if(document.getElementById('playlist').style.display=="none"){
+				pl.style.display="block";
+				document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-up");
+			}
+			else{
+				pl.style.display="none";
+				document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-down");
+			}
 		}
-		else{
-			pl.style.display="none";
-			document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-down");
-		}
-	}
     }
     
     
@@ -429,48 +518,57 @@
       var med=document.getElementById('media');
       /*VIDEO*/
       if(url.slice(-3)=='ebm'||url.slice(-3)=='mp4'||url.slice(-3)=='mkv'){
-	fileNamesLog[index]=url;
-	document.getElementById('soundD').setAttribute('style','display:none;');
-	aud.pause();aud.currentTime=0;
-	document.getElementById('mediaD').setAttribute('style','display:block;');
-	document.getElementsByClassName('title')[1].textContent = url; //For Video
-	med.src = URL.createObjectURL(file);
-	med.play();
+		fileNamesLog[index]=url;
+		document.getElementById('soundD').setAttribute('style','display:none;');
+		aud.pause();aud.currentTime=0;
+		/*document.getElementById('bgimg').setAttribute('style',"background:url('images/bg1.jpg') no-repeat center center;background-size:cover;background-attachment:fixed;");*/
+		document.getElementById('mediaD').setAttribute('style','display:block;');
+		document.getElementsByClassName('title')[1].textContent = url; //For Video
+		med.src = URL.createObjectURL(file);
+		med.play();
       }
       /*AUDIO*/
       else{
-	var tags = ID3.getAllTags(url);
-	console.log(tags);
-	document.getElementById('mediaD').setAttribute('style','display:none;');
-	med.pause();med.currentTime=0;
-	document.getElementById('soundD').setAttribute('style','display:block;');
-	if(tags.title==undefined){
-		fileNamesLog[index]=url;
-		document.getElementsByClassName('title')[0].textContent = url;
-	}
-	else{
-		fileNamesLog[index]=tags.title;
-		document.getElementsByClassName('title')[0].textContent = tags.title;
-	}
-	document.getElementById('artist').textContent = tags.artist || "";
-	document.getElementById('album').textContent = tags.album || "";
-	aud.src = URL.createObjectURL(file);
-	aud.play();
-	var image = tags.picture;
-	if (image) {
-		var base64String = "";
-		for (var i = 0; i < image.data.length; i++) {
-			base64String += String.fromCharCode(image.data[i]);
+		var tags = ID3.getAllTags(url);
+		console.log(tags);
+		document.getElementById('mediaD').setAttribute('style','display:none;');
+		med.pause();med.currentTime=0;
+		document.getElementById('soundD').setAttribute('style','display:block;');
+		if(tags.title==undefined){
+			fileNamesLog[index]=url;
+			document.getElementsByClassName('title')[0].textContent = url;
 		}
-		var base64 = "data:" + image.format + ";base64," +
-                window.btoa(base64String);
-		document.getElementById('picture').setAttribute('src',base64);
-		document.getElementById('picture').setAttribute('alt',url);
-	} 
-	else {
-		document.getElementById('picture').setAttribute('src','images/cplogorArt.png');
-		document.getElementById('picture').setAttribute('alt','coolPlay logo');
-	}
+		else{
+			fileNamesLog[index]=tags.title;
+			document.getElementsByClassName('title')[0].textContent = tags.title;
+		}
+		document.getElementById('artist').textContent = tags.artist || "";
+		document.getElementById('album').textContent = tags.album || "";
+		aud.src = URL.createObjectURL(file);
+		aud.play();
+		// Initialize the animation music bars on "first" "audio" load (index=0 => first media; flag=1 => first audio)
+		if(index==0&&flag==1){
+			initMp3Player();
+			flag=0;
+		}
+		var image = tags.picture;
+		if (image) {
+			var base64String = "";
+			for (var i = 0; i < image.data.length; i++) {
+				base64String += String.fromCharCode(image.data[i]);
+			}
+			var base64 = "data:" + image.format + ";base64," +
+        	    window.btoa(base64String);
+			document.getElementById('picture').setAttribute('src',base64);
+			document.getElementById('picture').setAttribute('alt',url);
+			/*var local="background:linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.1)), url('"+base64+"');background-repeat:no-repeat;background-size:cover;background-attachment:fixed;";
+			document.getElementById('bgimg').setAttribute('style',local);*/
+		} 
+		else {
+			document.getElementById('picture').setAttribute('src','images/cplogorArt.png');
+			document.getElementById('picture').setAttribute('alt','coolPlay logo');
+			/*document.getElementById('bgimg').setAttribute('style',"background:url('images/bg1.jpg') no-repeat center center;background-size:cover;background-attachment:fixed;");*/
+		}
       }
     }
     
@@ -478,81 +576,137 @@
     
     /*This tells if or not the video block is active,i.e. currently video(returns 1) or audio(returns 0) is playing*/
     function isVideoActive(){
-	if(document.getElementById('mediaD').style.display=='none'){
-		return 0;}
-	else{
-		return 1;}
+		if(document.getElementById('mediaD').style.display=='none'){
+			return 0;}
+		else{
+			return 1;}
     }
     
     
 
-        // jQuery to show modal for xl,lg,md devices
+    //jQuery to show modal for xl,lg,md devices
 	$("#searchR").click(function(){
 		$("#searchModal").modal();
 	});
     // function to show search results in modal for xl,lg,md devices
     function showResults(){
-	var t=document.getElementById("search").value;
-	var resultCount=0; //Number of results matching search query
-	var i;
-	var count=document.querySelectorAll("li").length;
-	/*Remove the previous search results from search modal*/
-	var foo = document.getElementById('searchResults');
-	while(foo.firstChild) 
-		foo.removeChild(foo.firstChild);
-	
-	if(t!=""){
-		for(i=0;i<count/2;i++){
-			var url=filesLog[i].urn || filesLog[i].name;
-			if(url.toLowerCase().includes(t.toLowerCase())){ //this function checks if query string is present in any list item
-				resultCount+=1;
-				var par=document.createElement("p");var anc=document.createElement("a");
-				anc.setAttribute("href","javascript:highlightIt("+i+")");
-				anc.appendChild(document.createTextNode(url));
-				par.appendChild(anc);
-				document.getElementById("searchResults").appendChild(par);
+		var t=document.getElementById("search").value;
+		var resultCount=0; //Number of results matching search query
+		var i;
+		var count=document.querySelectorAll("li").length;
+		/*Remove the previous search results from search modal*/
+		var foo = document.getElementById('searchResults');
+		while(foo.firstChild) 
+			foo.removeChild(foo.firstChild);
+		if(t!=""){
+			for(i=0;i<count/2;i++){
+				var url=filesLog[i].urn || filesLog[i].name;
+				if(url.toLowerCase().includes(t.toLowerCase())){ //this function checks if query string is present in any list item
+					resultCount+=1;
+					var par=document.createElement("p");var anc=document.createElement("a");
+					anc.setAttribute("href","javascript:highlightIt("+i+")");
+					anc.appendChild(document.createTextNode(url));
+					par.appendChild(anc);
+					document.getElementById("searchResults").appendChild(par);
+				}
 			}
 		}
-	}
-	if(resultCount==0){
-		document.getElementById("searchResults").appendChild(document.createTextNode("Nothing Found !!"));
-	}
+		if(resultCount==0){
+			document.getElementById("searchResults").appendChild(document.createTextNode("Nothing Found !!"));
+		}
     }
     
     
    
-       // jQuery to show modal for sm,xs devices
+    // jQuery to show modal for sm,xs devices
 	$("#searchR1").click(function(){
 		$("#searchModal").modal();
 	});
     // function to show search results in modal for sm,xs devices
     function showResults1(){
-	var t=document.getElementById("search1").value;
-	var resultCount=0; //Number of results matching search query
-	var i;
-	var count=document.querySelectorAll("li").length;
-	/*Remove the previous search results from search modal*/
-	var foo = document.getElementById('searchResults');
-	while(foo.firstChild) 
-		foo.removeChild(foo.firstChild);
-	
-	if(t!=""){
-		for(i=0;i<count/2;i++){
-			var url=filesLog[i].urn || filesLog[i].name;
-			if(url.toLowerCase().includes(t.toLowerCase())){ //this function checks if query string is present in any list item
-				resultCount+=1;
-				var par=document.createElement("p");var anc=document.createElement("a");
-				anc.setAttribute("href","javascript:highlightIt("+i+")");
-				anc.appendChild(document.createTextNode(url));
-				par.appendChild(anc);
-				document.getElementById("searchResults").appendChild(par);
+		var t=document.getElementById("search1").value;
+		var resultCount=0; //Number of results matching search query
+		var i;
+		var count=document.querySelectorAll("li").length;
+		/*Remove the previous search results from search modal*/
+		var foo = document.getElementById('searchResults');
+		while(foo.firstChild) 
+			foo.removeChild(foo.firstChild);
+		if(t!=""){
+			for(i=0;i<count/2;i++){
+				var url=filesLog[i].urn || filesLog[i].name;
+				if(url.toLowerCase().includes(t.toLowerCase())){ //this function checks if query string is present in any list item
+					resultCount+=1;
+					var par=document.createElement("p");var anc=document.createElement("a");
+					anc.setAttribute("href","javascript:highlightIt("+i+")");
+					anc.appendChild(document.createTextNode(url));
+					par.appendChild(anc);
+					document.getElementById("searchResults").appendChild(par);
+				}
 			}
 		}
+		if(resultCount==0){
+			document.getElementById("searchResults").appendChild(document.createTextNode("Nothing Found !!"));
+		}
 	}
-	if(resultCount==0){
-		document.getElementById("searchResults").appendChild(document.createTextNode("Nothing Found !!"));
+	
+
+
+	//Configure Enter key for search bar on all screen sizes
+	document.getElementById("search").addEventListener("keyup",function(event){
+		event.preventDefault();
+		if(event.keyCode===13){
+			document.getElementById("searchR").click();
+		}
+	});
+	document.getElementById("search1").addEventListener("keyup",function(event){
+		event.preventDefault();
+		if(event.keyCode===13){
+			document.getElementById("searchR1").click();
+		}
+	});
+
+
+
+	// Establish all variables that your Analyser will use
+	var canvas, ctx, source, context, analyser, fbc_array, bars, bar_x, bar_width, bar_height;
+	// Initialize the MP3 player after the page loads all of its HTML into the window
+	//window.addEventListener("load", initMp3Player, false);
+	function initMp3Player(){
+		var audio=document.getElementById("sound");
+		context = new AudioContext(); // AudioContext object instance
+		analyser = context.createAnalyser(); // AnalyserNode method
+		canvas = document.getElementById('analyser_render');
+		canvas.style.display="block";
+		ctx = canvas.getContext('2d');
+		// Re-route audio playback into the processing graph of the AudioContext
+		source = context.createMediaElementSource(audio); 
+		source.connect(analyser);
+		analyser.connect(context.destination);
+		frameLooper();
 	}
-    }   
+	// frameLooper() animates any style of graphics you wish to the audio frequency
+	// Looping at the default frame rate that the browser provides(approx. 60 FPS)
+	function frameLooper(){
+		window.requestAnimationFrame(frameLooper);
+		fbc_array = new Uint8Array(analyser.frequencyBinCount);
+		analyser.getByteFrequencyData(fbc_array);
+		ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+		ctx.fillStyle = '#00CCFF'; // Color of the bars
+		//var img=document.getElementById('picture');
+		//canvas.style.width=img.clientWidth;
+		//canvas.style.height=img.clientHeight;
+		bars = 100;
+		for (var i = 0; i < bars; i++) {
+			bar_x = i * 3;
+			bar_width = 2;
+			bar_height = -(fbc_array[i] / 2);
+			//  fillRect( x, y, width, height ) // Explanation of the parameters below
+			ctx.fillRect(bar_x, canvas.height, bar_width, bar_height);
+		}
+	}
+
+
 </script>
 </body>
 </html>
