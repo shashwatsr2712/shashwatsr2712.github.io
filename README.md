@@ -22,5 +22,8 @@ Non-scrolling navbar issue fixed for mobile devices.
 * Alerts for unsupported file formats and repeated media in playlist.
 ### Update (New Feature):
 * Search Feature added.
+## Update (Improvements):
+* New Revamped Look with improved UI.
+* Animations added (Infinite animation for Logo, Page Load animation, Music bars when audio is played).
 #
 ***The project is in development phase. More features and improvements would be added soon.***
