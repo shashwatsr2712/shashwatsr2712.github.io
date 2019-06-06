@@ -15,10 +15,14 @@
 	/*For main background*/
 	#bgimg{background:url('images/bg5.jpg') no-repeat center center;background-size:cover;background-attachment:scroll;}
 	/*For audio player background*/
-	/*#bgimg2{background:repeating-linear-gradient(to right bottom,rgb(255,255,0,0.7) 10%,rgb(255,192,203,0.7) 20%,rgb(135,206,235,0.7) 30%,rgb(255,255,0,0.7) 40%) no-repeat center center;background-size:cover;border-radius:10px;}*/
 	#bgimg2{background:repeating-linear-gradient(to right bottom,rgb(135,206,235,0.7) 20%,rgb(255,192,203,0.7) 25%,rgb(135,206,235,0.7) 40%) no-repeat center center;background-size:cover;border-radius:10px;}
+	/*earlier #bgimg2{background:repeating-linear-gradient(to right bottom,rgb(255,255,0,0.7) 10%,rgb(255,192,203,0.7) 20%,rgb(135,206,235,0.7) 30%,rgb(255,255,0,0.7) 40%) no-repeat center center;background-size:cover;border-radius:10px;}*/
 	/*For Playlist background*/
 	#bgimg3{background:url('images/bg6.jpg') no-repeat center center;background-size:cover;}
+	@media screen and (max-width:767px){
+		#bgimg{background:url('images/bg5.jpg') no-repeat center center;background-size:cover;background-attachment:scroll;}
+		/*initially https://i.pinimg.com/originals/65/84/22/658422b009ae35f763a279da6071697e.jpg*/
+	}
 
 	/*Custom color for navbar*/
 	.bg-custom{
@@ -134,7 +138,7 @@
 	<a href="" class="navbar-brand" data-toggle="modal" data-target="#myModal" style="font-style:italic;"><img src="images/cplogowcNavLogo.png" alt="coolPlay Logo" id="logoIM"/> &nbsp;COOLPLAY&trade;</a>
 	<div class="ml-auto">
 		<!--Search bar for xl, lg and md-->
-		<input class="d-none d-md-inline" style="border:none;padding:6px;" id="search" type="text" placeholder="Search..."><button id="searchR" class="d-none d-md-inline btn btn-secondary" onclick="showResults()">Go</button>
+		<input class="d-none d-md-inline" style="border:none;border_radius:5px;padding:6px;" id="search" type="text" placeholder="Search..."><button id="searchR" class="d-none d-md-inline btn btn-secondary" onclick="showResults()" title="Execute Search">Go</button>
 		<button type="button" id="rpt" class="btn btn-outline-danger" onclick="repeatToggle()" style="color:white;"><b>Repeat</b></button>
 		<button type="button" class="navbar-toggler navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar" aria-controls="myNavbar" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -219,7 +223,7 @@
 	<!--UpperSec Div begins-->
 	<div id="uppersec">
 	<!--Search bar for sm and xs only-->
-	<input class="d-inline d-md-none" style="border:none;padding:6px;float:left;width:80%;" id="search1" type="text" placeholder="Search..."><button id="searchR1" class="d-block d-md-none btn btn-secondary" onclick="showResults1()" id="searchR" style="width:20%;">Go</button>
+	<input class="d-inline d-md-none" style="border:none;border-radius:5px;padding:6px;float:left;width:80%;" id="search1" type="text" placeholder="Search..."><button id="searchR1" class="d-block d-md-none btn btn-secondary" onclick="showResults1()" id="searchR" style="width:20%;" title="Execute Search">Go</button>
 	<!--AUDIO-->
 	<center id="soundD"><figure class="figure" id="bgimg2"><!--initially style="background-color:#2EB1FF;" instead of bg-img-->
 		<div style="position:relative;">
@@ -263,7 +267,7 @@
 	<div class="container">
 	<input class="btn btn-info" type="file" id="file" onchange="loadFile(this)"><br/><br/><br/>
 	<h3 style="font-family:courier;color:black;font-style:bold;float:right;">
-		<a id="playlistToggle" class="fa fa-arrow-circle-down" href="javascript:showHidePlaylist();" title="Collapse/View Playlist">&nbsp;PlayList</a>&nbsp;<span id="countBadge" class="badge badge-primary"></span>
+		<a id="playlistToggle" class="fa fa-arrow-circle-down" title="Collapse/View Playlist" style="cursor:pointer;">&nbsp;PlayList</a>&nbsp;<span id="countBadge" class="badge badge-primary"></span>
 	</h3>
 	<ul id="playlist" class="list-group" type="square" style="margin-top:2.5em;font-size:1.1em;font-style:italic;color:black;word-wrap:break-word;">
 		<!--<li>Here's your playList </li>-->
@@ -498,6 +502,11 @@
     
     
     /*This function shows/hides the Playlist on clicking the fa-arrow icon*/
+    $("#playlistToggle").click(function(){
+		if(document.querySelectorAll('li').length!=0)
+			$("#playlist").toggle(500);
+    });
+    /*Earlier Vanilla JS implementation below without animation
     function showHidePlaylist(){
 		if(document.querySelectorAll('li').length!=0){
 			var pl=document.getElementById('playlist');
@@ -510,7 +519,7 @@
 				document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-down");
 			}
 		}
-    }
+    }*/
     
     
     
