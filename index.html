@@ -122,7 +122,7 @@
 	}
 	
 	#foot{
-	width:100%;padding:5px 0px 10px 0px;margin-top:200px;background-color:#D8D7CD;}
+	text-align:center;width:100%;padding:5px 0px 10px 0px;margin-top:200px;background-color:#D8D7CD;}
 
 	</style>
 	<meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -178,20 +178,20 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header" style="background-color:#000000;">
-					<h3 class="modal-title"><center><img src="images/cplogorModal.png" alt="coolPlay Logo" class="img-fluid rounded"/></center></h3>
+					<img src="images/cplogorModal.png" alt="coolPlay Logo" class="img-fluid rounded"/>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
-				<div class="modal-body" style="font-family:serif;" id="bgimg2">
-					<p><h5><strong>coolPlay</strong> allows you to make a playlist of your favourite songs by selecting them from your device. So just <strong>Add & Play</strong>.</h5></p><br/>
-					<p><h5><b>Get Started: </b>
-						<ul type="circle">
-							<h5>1.Add new item to the list by selecting a file from your device.</h5>
-							<h5>2.Select any item from the list to make its metadata (album art, artist, album) and audio controls visible</h5>
-							<h5>3.Click on <strong>Repeat</strong> to turn repetition on. Click on it again to turn it off.</h5>
-							<h5>4.Playlist can also be accessed from navigation bar.</h5>
-						</ul></h5></p>
-					<p><h5>Simple enough, isn't it?</h5></p><br/>
-					<p><h5><i>This project is currently in development phase. More features and improvements coming soon...</i></h5></p>
+				<div class="modal-body" id="bgimg2">
+					<p><strong>coolPlay</strong> allows you to make a playlist of your favourite songs by selecting them from your device. So just <strong>Add & Play</strong>.</p><br/>
+					<p><strong>Get Started: </strong></p>
+						<ul style="list-style-type:circle;list-style-image:url('images/cplogowc1.png');">
+							<li>1.Add new item to the list by selecting a file from your device.</li>
+							<li>2.Select any item from the list to make its metadata (album art, artist, album) and audio controls visible</li>
+							<li>3.Click on <strong>Repeat</strong> to turn repetition on. Click on it again to turn it off.</li>
+							<li>4.Playlist can also be accessed from navigation bar.</li>
+						</ul>
+					<p>Simple enough, isn't it?</p><br/>
+					<p><em>This project is currently in development phase. More features and improvements coming soon...</em></p>
 					<button type="button" class="btn btn-info" data-dismiss="modal" style="float:right;">Close</button>
 				</div>
 				<!--div class="modal-footer" id="bgimg">
@@ -220,12 +220,12 @@
 	
 	<!--Container opens-->
 	<div class="container">
-	<!--UpperSec Div begins-->
-	<div id="uppersec">
+	<!--UpperSec Div begins (text-aligning puts audio and video divs at the center)-->
+	<div id="uppersec" style="text-align:center;">
 	<!--Search bar for sm and xs only-->
 	<input class="d-inline d-md-none" style="border:none;border-radius:5px;padding:6px;float:left;width:80%;" id="search1" type="text" placeholder="Search..."><button id="searchR1" class="d-block d-md-none btn btn-secondary" onclick="showResults1()" id="searchR" style="width:20%;" title="Execute Search">Go</button>
 	<!--AUDIO-->
-	<center id="soundD"><figure class="figure" id="bgimg2"><!--initially style="background-color:#2EB1FF;" instead of bg-img-->
+	<div id="soundD"><figure class="figure" id="bgimg2"><!--initially style="background-color:#2EB1FF;" instead of bg-img-->
 		<div style="position:relative;">
 			<img id="picture" src="images/cplogorArt.png" alt="coolPlay logo" class="figure-img img-fluid rounded" style="margin-bottom:20px;margin-left:auto;margin-right:auto;"/>
 			<!--Position the canvas (with animation music bars) inside the Cover-Art/Image)-->
@@ -240,16 +240,16 @@
 			<p id="Ar"><b>Artist:</b> <span id="artist">__________</span></p>
 			<p id="Al"><b>Album:</b> <span id="album">__________</span></p>
 		</figcaption>
-	</figure></center>
+	</figure></div>
 	<!--AUDIO-->
 	
 	<!--VIDEO-->
-	<center id="mediaD" style="display:none">
+	<div id="mediaD" style="display:none">
 		<video id="media" width="100%" controls="controls" onended="autoplayNext()"></video><br/><br/>
 		<a href="javascript:playPrev();"><i class="far fa-hand-point-left fa-2x"></i></a>
 		<a href="javascript:autoplayNext();"><i class="far fa-hand-point-right fa-2x"></i></a><br/><br/>
 		<p style="font-family:courier;color:black;font-size:1.1em;text-align:center;overflow:auto;"><b>Title:</b><span class="title">__________</span></p>
-	</center>
+	</div>
 	<!--VIDEO-->
 	</div>
 	<!--UpperSec Div ends-->
@@ -276,14 +276,12 @@
 	<!--Container ends-->
 	
 	<footer id="foot">
-		<center>
-			<p><h6 style="display:inline;font-style:italic;">COOLPLAY&copy; 2019&nbsp;|&nbsp;WRITE TO US:</h6> <a href="mailto:shashwatsr2712@gmail.com">shashwatsr2712@gmail.com</a></p>
-			<a href="https://twitter.com/ShashwatSuny" target="_blank" class="awesome fab fa-twitter" style="color:white;text-decoration:none;"></a>&nbsp;
-			<a href="https://www.facebook.com/shashwat.srivastav.3" target="_blank" class="awesome fab fa-facebook" style="color:white;text-decoration:none;"></a>
-			<a href="https://github.com/shashwatsr2712/" target="_blank" class="awesome fab fa-github" style="font-size:40px;color:black;text-decoration:none;"></a>&nbsp;
-			<a href="https://www.linkedin.com/in/shashwatsr2712" target="_blank" class="awesome fab fa-linkedin" style="color:white;text-decoration:none;"></a>&nbsp;
-			<a href="https://www.quora.com/profile/%E0%A4%B6%E0%A4%BE%E0%A4%B6%E0%A5%8D%E0%A4%B5%E0%A4%A4-%E0%A4%B6%E0%A5%8D%E0%A4%B0%E0%A5%80%E0%A4%B5%E0%A4%BE%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%B5-Shashwat-Srivastava" target="_blank" class="awesome fab fa-quora" style="color:white;text-decoration:none;"></a>
-		</center>
+		<p style="margin-top:10px;font-style:italic;">COOLPLAY&copy; 2019&nbsp;|&nbsp;WRITE TO US: <a href="mailto:shashwatsr2712@gmail.com">shashwatsr2712@gmail.com</a></p>
+		<a href="https://twitter.com/ShashwatSuny" target="_blank" class="awesome fab fa-twitter" style="color:white;text-decoration:none;"></a>&nbsp;
+		<a href="https://www.facebook.com/shashwat.srivastav.3" target="_blank" class="awesome fab fa-facebook" style="color:white;text-decoration:none;"></a>
+		<a href="https://github.com/shashwatsr2712/" target="_blank" class="awesome fab fa-github" style="font-size:40px;color:black;text-decoration:none;"></a>&nbsp;
+		<a href="https://www.linkedin.com/in/shashwatsr2712" target="_blank" class="awesome fab fa-linkedin" style="color:white;text-decoration:none;"></a>&nbsp;
+		<a href="https://www.quora.com/profile/%E0%A4%B6%E0%A4%BE%E0%A4%B6%E0%A5%8D%E0%A4%B5%E0%A4%A4-%E0%A4%B6%E0%A5%8D%E0%A4%B0%E0%A5%80%E0%A4%B5%E0%A4%BE%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A4%B5-Shashwat-Srivastava" target="_blank" class="awesome fab fa-quora" style="color:white;text-decoration:none;"></a>
 	</footer>
 	</div>
 	<!--LowerSec Div ends-->
