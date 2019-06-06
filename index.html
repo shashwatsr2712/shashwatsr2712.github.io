@@ -505,7 +505,12 @@
     /*This function shows/hides the Playlist on clicking the fa-arrow icon*/
     $("#playlistToggle").click(function(){
 		if(document.querySelectorAll('li').length!=0)
-			$("#playlist").toggle(500);
+			$("#playlist").toggle(500,function(){
+				if($("#playlist").css("display")=="none")
+					document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-down");	
+				else
+					document.getElementById('playlistToggle').setAttribute("class","fa fa-arrow-circle-up");
+			});
     });
     /*Earlier Vanilla JS implementation below without animation
     function showHidePlaylist(){
